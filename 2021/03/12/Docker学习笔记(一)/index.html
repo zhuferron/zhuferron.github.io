@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/zhuferron.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/zhuferron.github.io/images/dragon_32px_504526_easyicon.net.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/zhuferron.github.io/images/dragon_16px_504526_easyicon.net.png">
+  <link rel="mask-icon" href="/zhuferron.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/zhuferron.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/zhuferron.github.io/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/zhuferron.github.io/lib/pace/pace-theme-minimal.min.css">
+  <script src="/zhuferron.github.io/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuferron.github.io","root":"/zhuferron.github.io/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Docker第一部分学习笔记，主要介绍了Docker基本知识、安装和使用、基本命令、以及容器化技术和镜像原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习笔记(一)">
+<meta property="og:url" content="http://zhuferron.github.io/2021/03/12/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="Ferron的个人博客">
+<meta property="og:description" content="Docker第一部分学习笔记，主要介绍了Docker基本知识、安装和使用、基本命令、以及容器化技术和镜像原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:/Application/Typora/image/image-20210302105607886.png">
+<meta property="og:image" content="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=793314303,480081697&fm=26&gp=0.jpg">
+<meta property="og:image" content="d:/Application/Typora/image/image-20210302184015817.png">
+<meta property="og:image" content="d:/Application/Typora/image/image-20210302184551342.png">
+<meta property="og:image" content="d:/Application/Typora/image/image-20210302185207660.png">
+<meta property="og:image" content="d:/Application/Typora/image/image-20210302194016793.png">
+<meta property="og:image" content="d:/Application/Typora/image/image-20210302194047986.png">
+<meta property="article:published_time" content="2021-03-12T11:18:44.740Z">
+<meta property="article:modified_time" content="2021-03-12T11:22:26.697Z">
+<meta property="article:author" content="Ferron">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/Application/Typora/image/image-20210302105607886.png">
+
+<link rel="canonical" href="http://zhuferron.github.io/2021/03/12/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker学习笔记(一) | Ferron的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/zhuferron.github.io/rss2.xml" title="Ferron的个人博客" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/zhuferron.github.io/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ferron的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/zhuferron.github.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/zhuferron.github.io/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/zhuferron.github.io/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/zhuferron.github.io/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/zhuferron.github.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhuferron.github.io/2021/03/12/Docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/zhuferron.github.io/images/avatar.gif">
+      <meta itemprop="name" content="Ferron">
+      <meta itemprop="description" content="何谈三观，褒贬任剪，笑骂随便">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ferron的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker学习笔记(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-12 19:18:44 / 修改时间：19:22:26" itemprop="dateCreated datePublished" datetime="2021-03-12T19:18:44+08:00">2021-03-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/zhuferron.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">中间件</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Docker第一部分学习笔记，主要介绍了Docker基本知识、安装和使用、基本命令、以及容器化技术和镜像原理</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Docker概述"><a href="#Docker概述" class="headerlink" title="Docker概述"></a>Docker概述</h2><h3 id="出现场景"><a href="#出现场景" class="headerlink" title="出现场景"></a>出现场景</h3><p>一款产品：开发–&gt;上线 两套环境！应用环境，应用配置！</p>
+<p>开发—&gt;运维，问题：版本更新，导致服务不可用，对运维考验十分大</p>
+<p>环境配置是十分的麻烦。每一个机器都要配属环境，费时费力！</p>
+<p><strong>发布一个项目(jar+(redis mysql jdk es))，项目能不能带上环境安装打包</strong></p>
+<p>之前在服务器配置一个应用的环境Redis MySQL ….配置很麻烦，windows–&gt;linux</p>
+<p>传统：开发jar，运维来做</p>
+<p>现在：开发打包部署上线，一套流程做完</p>
+<p><img src="D:\Application\Typora\image\image-20210302105607886.png" alt="image-20210302105607886"></p>
+<p>以上问题Docker能解决！</p>
+<p>Docker的思想来自于集装箱</p>
+<p>隔离：Docker核心思想，打包装箱，每个箱子是互相隔离！</p>
+<h3 id="Docker功能"><a href="#Docker功能" class="headerlink" title="Docker功能"></a>Docker功能</h3><ul>
+<li>Docker与虚拟机技术的不同：<ul>
+<li>传统虚拟机虚拟出一套硬件，运行一个完整的操作系统</li>
+<li>容器化技术不是模拟一个完整的操作系统</li>
+<li>每个容器间相互隔离，每个容器都有一个属于自己的文件系统，互不影响</li>
+</ul>
+</li>
+<li>DevOps(开发、运维)：<ul>
+<li><strong>应用更快速的交付和部署</strong>，Docker打包镜像发布测试，一键运行</li>
+<li><strong>更便捷的升级和扩缩容</strong>，部署更搭积木一样</li>
+<li><strong>更简单的系统运维</strong>，容器化之后我们的开发，测试环境都是高度一致的</li>
+<li><strong>更高效的计算资源利用</strong>，服务器的性能可以被压榨到极致</li>
+</ul>
+</li>
+</ul>
+<h2 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h2><h3 id="Docker名词"><a href="#Docker名词" class="headerlink" title="Docker名词"></a>Docker名词</h3><p><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=793314303,480081697&fm=26&gp=0.jpg" alt="点击查看源网页"></p>
+<p><strong>镜像(image)：</strong>docker镜像好比一个模板，可以通过这个模板来创建容器服务，tomcat镜像–&gt;run–&gt;tomcat01容器(提供服务器)，通过这个镜像可以创建多个容器(最终服务运行或者项目运行就是在容器中)</p>
+<p><strong>容器(container)：</strong>Docker利用容器技术，独立运行一个或者一个组应用，通过镜像来创建的</p>
+<p>启动，停止，删除，基本命令！</p>
+<p>可以把容器理解为一个简易的linux系统</p>
+<p><strong>仓库(repository)：</strong>仓库就是存在镜像的地方，分为公有仓库和私有仓库</p>
+<h3 id="Docker安装-1"><a href="#Docker安装-1" class="headerlink" title="Docker安装"></a>Docker安装</h3><ul>
+<li><p>卸载旧的docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure></li>
+<li><p>安装需要的安装包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils</span><br></pre></td></tr></table></figure></li>
+<li><p>设置镜像仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo  <span class="comment">#默认是国外的仓库，十分慢，尽量使用国内的</span></span><br><span class="line">   http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure></li>
+<li><p>更新软件包索引</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum makecache fast</span><br></pre></td></tr></table></figure></li>
+<li><p>安装docker相关内容：ce社区版，ee企业版</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure></li>
+<li><p>启动docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure></li>
+<li><p>查看docker版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure></li>
+<li><p>启动hello-world测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure></li>
+<li><p>查看下载的hello-world镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure></li>
+<li><p>若要卸载docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker-ce docker-ce-cli containerd.io</span><br><span class="line">rm -rf /var/lib/docker  <span class="comment">#docker默认工作路径</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="配置阿里云镜像加速"><a href="#配置阿里云镜像加速" class="headerlink" title="配置阿里云镜像加速"></a>配置阿里云镜像加速</h3><ul>
+<li><p>登录阿里云，找到镜像加速地址</p>
+</li>
+<li><p>设置密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sanfashi520</span><br></pre></td></tr></table></figure></li>
+<li><p>找到镜像加速器</p>
+<p><img src="D:\Application\Typora\image\image-20210302184015817.png" alt="image-20210302184015817"></p>
+</li>
+<li><p>配置使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;registry-mirrors&quot;</span>: [<span class="string">&quot;https://21iz339s.mirror.aliyuncs.com&quot;</span>]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Docker执行流程"><a href="#Docker执行流程" class="headerlink" title="Docker执行流程"></a>Docker执行流程</h3><ul>
+<li>run的执行过程</li>
+</ul>
+<p><img src="D:\Application\Typora\image\image-20210302184551342.png" alt="image-20210302184551342"></p>
+<h3 id="Docker底层原理"><a href="#Docker底层原理" class="headerlink" title="Docker底层原理"></a>Docker底层原理</h3><p>docker是一个Client-Server结构的系统，Docker的守护进程运行在主机上，通过Socket从客户端访问！</p>
+<p>DockerSever接收到Docker-Client的指令，就会执行这个指令</p>
+<p><img src="D:\Application\Typora\image\image-20210302185207660.png" alt="image-20210302185207660"></p>
+<p><strong>为什么Docker会比虚拟机快？</strong></p>
+<ol>
+<li>Dokcer有着比虚拟机更少的抽象层</li>
+<li>docker利用的是宿主机的内核，vm需要的是guest os</li>
+</ol>
+<p>所有说，新建一个容器的时候，docker不需要向虚拟机一样重新加载一个操作系统内科，避免引导。</p>
+<h2 id="Docker命令"><a href="#Docker命令" class="headerlink" title="Docker命令"></a>Docker命令</h2><h3 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker version  <span class="comment">#显示docker的版本信息</span></span><br><span class="line">docker info  <span class="comment">#显示docker更详细的信息</span></span><br><span class="line">docker 命令 --<span class="built_in">help</span>  <span class="comment">#帮助命令</span></span><br></pre></td></tr></table></figure>
+
+<p>帮助文档的地址：<a target="_blank" rel="noopener" href="https://docs.docker.com/reference/">https://docs.docker.com/reference/</a></p>
+<h3 id="镜像的基本命令"><a href="#镜像的基本命令" class="headerlink" title="镜像的基本命令"></a>镜像的基本命令</h3><ul>
+<li><p><code>docker images</code>：查看本机的所有镜像</p>
+</li>
+<li><p><code>docker search mysql</code>：搜索mysql镜像</p>
+</li>
+<li><p><code>docker pull mysql:5.7</code>：下载5.7的mysql</p>
+</li>
+<li><p><code>docker rmi -f 镜像id</code>：删除指定id的镜像</p>
+</li>
+</ul>
+<h4 id="3-3、容器的基本命令"><a href="#3-3、容器的基本命令" class="headerlink" title="3.3、容器的基本命令"></a>3.3、容器的基本命令</h4><p>说明：有了镜像才可以创建容器，linux，下载一个centos镜像来测试学习</p>
+<ul>
+<li><p><code>docker pull centos</code>：下载一个centos</p>
+</li>
+<li><p><code>docker run [可选参数] image</code>：运行一个镜像</p>
+<ul>
+<li>–name=”Name”：容器名字  tomcat01  tomcat02，用来区分容器</li>
+<li>-d：后台方式运行</li>
+<li>-it：使用交互方式运行，进入容器查看内容</li>
+<li>-p<ul>
+<li>-p ip：主机命令</li>
+<li>-p 主机端口：容器端口(常用)</li>
+<li>-p 容器端口</li>
+</ul>
+</li>
+<li>-p：随机指定端口</li>
+</ul>
+</li>
+<li><p><code>docker ps</code>：列出所有正在运行的容器</p>
+<ul>
+<li>-a：列出当前正在运行的容器+历史运行过的容器</li>
+<li>-n=?：列出最进创建的几个容器</li>
+<li>-q：显示容器的编号</li>
+</ul>
+</li>
+<li><p><code>docker rm 容器id</code>：删除指定id的容器</p>
+</li>
+<li><p><code>docker start 容器id</code>：启动容器</p>
+</li>
+<li><p><code>docker restart 容器id</code>：重启容器</p>
+</li>
+<li><p><code>docker stop 容器id</code>：停止容器</p>
+</li>
+<li><p><code>docker kill 容器id</code>：强制停止容器</p>
+</li>
+</ul>
+<p>测试：</p>
+<ul>
+<li><p>启动并进入容器**(容器就是一个小型的服务器)**</p>
+<p><img src="D:\Application\Typora\image\image-20210302194016793.png" alt="image-20210302194016793"></p>
+</li>
+<li><p>容器内部文件：</p>
+<p><img src="D:\Application\Typora\image\image-20210302194047986.png" alt="image-20210302194047986"></p>
+</li>
+<li><p>使用命令<code>exit</code>退出当前容器，并返回主机</p>
+</li>
+<li><p>使用Ctrl+p+q返回主机，容器依旧运行</p>
+</li>
+</ul>
+<h3 id="常用的其他命令"><a href="#常用的其他命令" class="headerlink" title="常用的其他命令"></a>常用的其他命令</h3><ul>
+<li><code>docker run -d centos</code>：通过后台启动容器，<strong>注意：docker容器使用后台运行，就必须要有一个前台进程，docker发现没有应用，就会自动停止！</strong></li>
+<li><code>docker logs -f -t --tail 10 容器id</code>：查看日志</li>
+<li><code>docker top 容器id</code>：查看容器的进程信息</li>
+<li><code>docker inspect 容器id</code>：查看容器的元数据</li>
+<li><code>docker exec -it 容器id</code>：进入某个容器，进入一个容器开启一个新的命令行</li>
+<li><code>docker attach 容器id</code>：进入某个容器，进入的是当前的命令行</li>
+<li><code>docker cp 容器id:容器内文件路径 主机路径</code>：把容器中文件拷贝到主机</li>
+</ul>
+<h3 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h3><ul>
+<li><p>搜索和安装nginx，在docker hub搜索Nginx的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx</span><br></pre></td></tr></table></figure></li>
+<li><p>运行nginx。<strong>端口映射，外网可以通过3344访问服务器内里面的容器(80)</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name nginx01 -p 3344:80 nginx</span><br></pre></td></tr></table></figure></li>
+<li><p>本地自测</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:3344</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="安装Tomcat"><a href="#安装Tomcat" class="headerlink" title="安装Tomcat"></a>安装Tomcat</h3><ul>
+<li><p>搜索tomcat</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm tomcat:9.0  #一般用来测试，用完就删除</span><br><span class="line">docker pull tomcat:9.0 #下载tomcat 用完不会删除</span><br></pre></td></tr></table></figure></li>
+<li><p>运行tomcat。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3355:8080 --name tomcat01 tomcat</span><br></pre></td></tr></table></figure></li>
+<li><p>进入容器，发现问题：阿里云镜像的原因，默认是最小的镜像，所以把所有不必要的东西剔除了</p>
+<ul>
+<li>linux命令少了</li>
+<li>没有webapp</li>
+</ul>
+</li>
+</ul>
+<h4 id="可视化面板安装"><a href="#可视化面板安装" class="headerlink" title="可视化面板安装"></a>可视化面板安装</h4><p><strong>先使用portainer，后面会使用Rancher</strong></p>
+<ul>
+<li><p>下载使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8088:9000 \</span><br><span class="line">--restart=always -v /var/run/docker.sock:/var/run/docker.sock --privileged=<span class="literal">true</span> portainer/portainer</span><br></pre></td></tr></table></figure></li>
+<li><p>外网访问。</p>
+</li>
+<li><p>先登录账户，设置密码</p>
+</li>
+<li><p>选择<code>local</code>进入就行了</p>
+</li>
+</ul>
+<h2 id="Docker镜像"><a href="#Docker镜像" class="headerlink" title="Docker镜像"></a>Docker镜像</h2><h3 id="什么是镜像"><a href="#什么是镜像" class="headerlink" title="什么是镜像"></a>什么是镜像</h3><p>镜像是一种轻量级、可执行的独立软件包，用来打包软件运行环境和基于运行环境开发的软件，它包含运行某个软件所需的所有内容，包括代码、运行时、库、环境变量和配置文件。</p>
+<p>所有的应用，直接打包成为一个docker镜像，就可以直接跑起来</p>
+<p>如何得到镜像：</p>
+<ul>
+<li>从远程仓库下载</li>
+<li>拷贝</li>
+<li>自己制作</li>
+</ul>
+<h3 id="镜像加载原理"><a href="#镜像加载原理" class="headerlink" title="镜像加载原理"></a>镜像加载原理</h3><ul>
+<li>UnionFS，联合文件系统</li>
+</ul>
+<h3 id="Commit镜像"><a href="#Commit镜像" class="headerlink" title="Commit镜像"></a>Commit镜像</h3><p>自己制作一个镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker commit 提交让其成为一个新的副本</span><br><span class="line"></span><br><span class="line"><span class="comment">#命令和git类似</span></span><br><span class="line"><span class="comment">#官方的tomcat的webapps没有文件，我们想要发布一个有webapps的镜像</span></span><br><span class="line"><span class="comment">#得到自己的镜像</span></span><br><span class="line">cp -r /webapps.dist/* /webapps</span><br><span class="line"><span class="comment">#commit自己的镜像</span></span><br><span class="line">docker commit -a=<span class="string">&quot;ferron&quot;</span> -m=<span class="string">&quot;add webapps app&quot;</span> 容器id tomcat02 tomcat02:1.0</span><br><span class="line"><span class="comment">#查看自己的镜像</span></span><br><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+    </div>
+
+    
+    
+    
+
+     
+       <div>
+         <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+       </div>
+     
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/zhuferron.github.io/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/zhuferron.github.io/2021/03/12/Redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)/" rel="prev" title="Redis学习笔记(一)">
+      <i class="fa fa-chevron-left"></i> Redis学习笔记(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/zhuferron.github.io/2021/03/12/Redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)/" rel="next" title="Redis学习笔记(二)">
+      Redis学习笔记(二) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Docker概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BA%E7%8E%B0%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">出现场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">Docker功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">Docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker%E5%90%8D%E8%AF%8D"><span class="nav-number">2.1.</span> <span class="nav-text">Docker名词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker%E5%AE%89%E8%A3%85-1"><span class="nav-number">2.2.</span> <span class="nav-text">Docker安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="nav-number">2.3.</span> <span class="nav-text">配置阿里云镜像加速</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">Docker执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">2.5.</span> <span class="nav-text">Docker底层原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">Docker命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%AE%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">镜像的基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3%E3%80%81%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.3、容器的基本命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">常用的其他命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Nginx"><span class="nav-number">3.4.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Tomcat"><span class="nav-number">3.5.</span> <span class="nav-text">安装Tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E9%9D%A2%E6%9D%BF%E5%AE%89%E8%A3%85"><span class="nav-number">3.5.1.</span> <span class="nav-text">可视化面板安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E9%95%9C%E5%83%8F"><span class="nav-number">4.</span> <span class="nav-text">Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%95%9C%E5%83%8F"><span class="nav-number">4.1.</span> <span class="nav-text">什么是镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">镜像加载原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Commit%E9%95%9C%E5%83%8F"><span class="nav-number">4.3.</span> <span class="nav-text">Commit镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ferron"
+      src="/zhuferron.github.io/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Ferron</p>
+  <div class="site-description" itemprop="description">何谈三观，褒贬任剪，笑骂随便</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/zhuferron.github.io/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/zhuferron.github.io/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/zhuferron.github.io/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-3-11 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ferron</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/zhuferron.github.io/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/zhuferron.github.io/lib/anime.min.js"></script>
+  <script src="/zhuferron.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/zhuferron.github.io/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/zhuferron.github.io/js/utils.js"></script>
+
+<script src="/zhuferron.github.io/js/motion.js"></script>
+
+
+<script src="/zhuferron.github.io/js/schemes/pisces.js"></script>
+
+
+<script src="/zhuferron.github.io/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
