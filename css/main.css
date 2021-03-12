@@ -1143,6 +1143,12 @@ pre .javascript .function {
   padding: 2px;
   border-radius: 50%;
 }
+.site-author-image {
+  transition: transform 1s ease-out;
+}
+.site-author-image:hover {
+  transform: rotateZ(360deg);
+}
 .site-author-name {
   color: var(--text-color);
   font-weight: 600;
@@ -1169,7 +1175,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #030d71;
+  background: #0942ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2617,4 +2623,11 @@ ul.breadcrumb li + li:last-child {
   .pagination {
     margin: 8px 0 0;
   }
+}
+body {
+  background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.wzsky.net%2Fimg2013%2Fuploadimg%2F20130427%2F1130311.jpg&refer=http%3A%2F%2Fwww.wzsky.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618144889&t=53168ce831da877ed17991d28d781fe8");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 50%;
 }
