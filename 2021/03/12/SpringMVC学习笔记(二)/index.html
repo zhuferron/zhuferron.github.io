@@ -29,13 +29,13 @@
 <meta property="og:site_name" content="Ferron的个人博客">
 <meta property="og:description" content="SpringMVC第二部分学习笔记，主要介绍了的Restful风格、转发和重定向、json和Ajax、拦截器、文件上传和下载等内容">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="d:/Application/Typora/Typora/image/image-20210121103107703.png">
+<meta property="og:image" content="http://qpuvd47ie.hn-bkt.clouddn.com/image-20210121103107703.png">
 <meta property="article:published_time" content="2021-03-12T10:24:40.108Z">
-<meta property="article:modified_time" content="2021-03-12T10:34:49.650Z">
+<meta property="article:modified_time" content="2021-03-12T12:31:35.185Z">
 <meta property="article:author" content="Ferron">
 <meta property="article:tag" content="SpringMVC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:/Application/Typora/Typora/image/image-20210121103107703.png">
+<meta name="twitter:image" content="http://qpuvd47ie.hn-bkt.clouddn.com/image-20210121103107703.png">
 
 <link rel="canonical" href="http://zhuferron.github.io/2021/03/12/SpringMVC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)/">
 
@@ -195,7 +195,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-12 18:24:40 / 修改时间：18:34:49" itemprop="dateCreated datePublished" datetime="2021-03-12T18:24:40+08:00">2021-03-12</time>
+              <time title="创建时间：2021-03-12 18:24:40 / 修改时间：20:31:35" itemprop="dateCreated datePublished" datetime="2021-03-12T18:24:40+08:00">2021-03-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -343,7 +343,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&quot;/j4&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">json4</span><span class="params">()</span> <span class="keyword">throws</span> JsonProcessingException </span>&#123;</span><br><span class="line"></span><br><span class="line">    List&lt;User&gt; userList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    User user1 = <span class="keyword">new</span> User(<span class="string">&quot;ferron1&quot;</span>, <span class="number">3</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line">    User user2 = <span class="keyword">new</span> User(<span class="string">&quot;ferron1&quot;</span>, <span class="number">3</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line">    User user3 = <span class="keyword">new</span> User(<span class="string">&quot;ferron1&quot;</span>, <span class="number">3</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line">    User user4 = <span class="keyword">new</span> User(<span class="string">&quot;ferron1&quot;</span>, <span class="number">3</span>, <span class="string">&quot;男&quot;</span>);</span><br><span class="line"></span><br><span class="line">    userList.add(user1);</span><br><span class="line">    userList.add(user2);</span><br><span class="line">    userList.add(user3);</span><br><span class="line">    userList.add(user4);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> JSON.toJSONString(userList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><h3 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h3><p>AJAX（Asynchronous JavaScript and XML），异步的JS和XML，是一种无需刷新页面的情况下，局部的刷新页面数据的技术。<strong>XHR</strong>就是AJAX的请求。</p>
-<h3 id="利用jQuery实现Ajax，初体验"><a href="#利用jQuery实现Ajax，初体验" class="headerlink" title="利用jQuery实现Ajax，初体验"></a>利用jQuery实现Ajax，初体验</h3><p><img src="D:\Application\Typora\Typora\image\image-20210121103107703.png" alt="image-20210121103107703"></p>
+<h3 id="利用jQuery实现Ajax，初体验"><a href="#利用jQuery实现Ajax，初体验" class="headerlink" title="利用jQuery实现Ajax，初体验"></a>利用jQuery实现Ajax，初体验</h3><p><img src="http://qpuvd47ie.hn-bkt.clouddn.com/image-20210121103107703.png" alt="image-20210121103107703"></p>
 <ol>
 <li><p>在applicationContext.xml中配置静态资源过滤</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:default-servlet-handler</span>/&gt;</span></span><br></pre></td></tr></table></figure></li>
