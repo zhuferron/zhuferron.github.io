@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/zhuferron.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/zhuferron.github.io/images/dragon_32px_504526_easyicon.net.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/zhuferron.github.io/images/dragon_16px_504526_easyicon.net.png">
+  <link rel="mask-icon" href="/zhuferron.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/zhuferron.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/zhuferron.github.io/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/zhuferron.github.io/lib/pace/pace-theme-minimal.min.css">
+  <script src="/zhuferron.github.io/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuferron.github.io","root":"/zhuferron.github.io/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="软件体系架构课程论文，这部分主要对Pig项目分析和源码解读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务架构及Pig项目分析(三)：Pig项目分析">
+<meta property="og:url" content="http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%B8%89)/index.html">
+<meta property="og:site_name" content="Ferron的个人博客">
+<meta property="og:description" content="软件体系架构课程论文，这部分主要对Pig项目分析和源码解读">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083536.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083557.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083609.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083629.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083729.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083742.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083755.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083808.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083812.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083832.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083843.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083854.png">
+<meta property="og:image" content="http://fl.ljuuu.com/img/20210317083903.png">
+<meta property="article:published_time" content="2021-03-17T00:39:54.747Z">
+<meta property="article:modified_time" content="2021-03-17T00:39:38.883Z">
+<meta property="article:author" content="Ferron">
+<meta property="article:tag" content="SpringCloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fl.ljuuu.com/img/20210317083536.png">
+
+<link rel="canonical" href="http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%B8%89)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>微服务架构及Pig项目分析(三)：Pig项目分析 | Ferron的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/zhuferron.github.io/rss2.xml" title="Ferron的个人博客" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/zhuferron.github.io/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ferron的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/zhuferron.github.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/zhuferron.github.io/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/zhuferron.github.io/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/zhuferron.github.io/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/zhuferron.github.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%B8%89)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/zhuferron.github.io/images/avatar.gif">
+      <meta itemprop="name" content="Ferron">
+      <meta itemprop="description" content="何谈三观，褒贬任剪，笑骂随便">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ferron的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微服务架构及Pig项目分析(三)：Pig项目分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-17 08:39:54 / 修改时间：08:39:38" itemprop="dateCreated datePublished" datetime="2021-03-17T08:39:54+08:00">2021-03-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/zhuferron.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">软件体系架构课程论文，这部分主要对Pig项目分析和源码解读</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>  本文微服务案例选择的是码云上19.2K star的pig项目，该项目是基于 Spring Cloud Hoxton、Spring Boot 2.4、OAuth2的RBAC权限管理系统。</p>
+<h2 id="项目技术"><a href="#项目技术" class="headerlink" title="项目技术"></a>项目技术</h2><h3 id="Nacos-服务注册与发现"><a href="#Nacos-服务注册与发现" class="headerlink" title="Nacos 服务注册与发现"></a>Nacos 服务注册与发现</h3><p>​    该项目通过Nacos注册中心来作为协调所有服务，所有服务需要在注册中心进行注册，而一个服务需要调用另外一个服务的时候则先取注册中心查找，然后得到查找结果后再去调用对应的服务。具体过程如下图所示：所有的订单服务都在注册中心中注册，但某一个用户服务需要订单服务时，则去注册中心查找需要的订单服务名字，然后去调用对应的服务。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083536.png"></p>
+<h3 id="Ribbon负载均衡"><a href="#Ribbon负载均衡" class="headerlink" title="Ribbon负载均衡"></a>Ribbon负载均衡</h3><p>​    Ribbon是Netflix发布的云中间层服务开源项目，其主要功能是提供客户端实现负载均衡算法。负载均衡的调度规则一般为轮询调度或者加权轮询策略，轮询调度算法的原理是每一次把来自用户的请求轮流分配给内部中的服务器，从1开始，直到N(内部服务器个数)，然后重新开始循环。轮询调度算法假设所有服务器的处理性能都相同，不关心每台服务器的当前连接数和响应速度。当请求服务间隔时间变化比较大时，轮询调度算法容易导致服务器间的负载不平衡。所以此种均衡算法适合于服务器组中的所有服务器都有相同的软硬件配置并且平均服务请求相对均衡的情况，因此现实中往往会采用加权轮询策略，而限于本文的篇幅，加权轮询策略原理不再展开。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083557.png"></p>
+<p>​    在SpringCloud中往往使用Ribbon来实现负载均值，其过程如下图所示：当有一个服务需要调用另外某一个服务时，该服务会向注册中心进行查询，注册中心会返回一个可用的服务实例列表，例如前文的三个订单服务中只有一个订单服务空闲，另外两个订单服务处于高工作量时，用户服务就能得到空闲的订单服务的名称，此时用户服务就可直接调用该空闲的订单服务。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083609.png"></p>
+<h3 id="GateWay业务网关"><a href="#GateWay业务网关" class="headerlink" title="GateWay业务网关"></a>GateWay业务网关</h3><p>​    面对互联网复杂的业务系统，基本可以将API网关分成两类：流量网关和业务网关。流量网关是指跟具体的后端业务系统和服务完全无关的部分，比如安全策略、全局性流控策略、流量分发策略等。而业务网关针对具体的后端业务系统，或者是服务和业务有一定关联性的部分，并且一般被直接部署在业务服务的前面。业务网关一般部署在流量网关之后，业务系统之前，比流量网关更靠近系统。我们大部分情况下说的 API 网关，狭义上指的是业务网关。并且如果系统的规模不大，我们也会将两者合二为一，使用一个网关来处理所有的工作。</p>
+<p>​    SpringCloud中GateWay作为业务网关的一种，整个作用原理如下图：客户端发送的请求不会直接到服务端，而是首先通过网关系统，如果请求与网关程序定义的路由匹配，则将其发送到网关 Web 处理程序，此处理程序运行特定的请求过滤器链。过滤器之间用虚线分开的原因是过滤器可能会在发送代理请求之前或之后执行逻辑。所有 “pre” 过滤器逻辑先执行，然后执行代理请求，代理请求完成后，执行 “post” 过滤器逻辑。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083629.png"></p>
+<h3 id="Sentinel-流量保护"><a href="#Sentinel-流量保护" class="headerlink" title="Sentinel 流量保护"></a>Sentinel 流量保护</h3><p>​    Hystrix的产生和原理在前文已经讲述，Sentinel 和 Hystrix 的原则是一致的：当调用链路中某个资源出现不稳定，例如，表现为 timeout，异常比例升高的时候，则对这个资源的调用进行限制，并让请求快速失败，避免影响到其它的资源，最终产生雪崩的效果。但是在限制的手段上，Sentinel 和 Hystrix 采取了完全不一样的方法。Sentinel 对这个问题采取了两种手段：</p>
+<ol>
+<li><p>通过并发线程数进行限制：和资源池隔离的方法不同，Sentinel 通过限制资源并发线程的数量，来减少不稳定资源对其它资源的影响。这样不但没有线程切换的损耗，也不需要您预先分配线程池的大小。当某个资源出现不稳定的情况下，例如响应时间变长，对资源的直接影响就是会造成线程数的逐步堆积。当线程数在特定资源上堆积到一定的数量之后，对该资源的新请求就会被拒绝。堆积的线程完成任务后才开始继续接收请求。</p>
+</li>
+<li><p>通过响应时间对资源进行降级：除了对并发线程数进行控制以外，Sentinel 还可以通过响应时间来快速降级不稳定的资源。当依赖的资源出现响应时间过长后，所有对该资源的访问都会被直接拒绝，直到过了指定的时间窗口之后才重新恢复。</p>
+</li>
+</ol>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="注册中心源码分析"><a href="#注册中心源码分析" class="headerlink" title="注册中心源码分析"></a>注册中心源码分析</h3><p>​    从码云将pig项目clone到本地之后，使用IDEA打开该项目，SpringBoot项目本质还是一个Maven项目，故将该项目解析成一个Maven项目。</p>
+<p>​    Springcloud-commons包中自动装配了AutoServiceRegistrationAutoConfiguration类，这个类就是与服务注册相关的配置类。如下图所示，找到这个配置类，这个配置类注入了一个AutoServiceRegistration实例。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083729.png"></p>
+<p>​    分析与AutoServiceRegistration类相关的其他类，发现有个很重要的AbstractAutoServiceRegistration抽象类实现了AutoServiceRegistration这个接口。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083742.png"></p>
+<p>​    AbstractAutoServiceRegistration类实现了onApplicationEvent抽象方法,并且监听WebServerInitializedEvent事件(当Webserver初始化完成之后) , 调用this.bind ( event )方法。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083755.png"></p>
+<p>​    最终会调用NacosServiceREgistry.register()方法进行服务注册。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083808.png"></p>
+<p><img src="http://fl.ljuuu.com/img/20210317083812.png"></p>
+<h3 id="GateWay路由网关源码分析"><a href="#GateWay路由网关源码分析" class="headerlink" title="GateWay路由网关源码分析"></a>GateWay路由网关源码分析</h3><p>​    因为目前SpringCloud未集成Zuul，并且Zuul也已经停止维护，而GateWay与Spring完美集成，因此Pig项目选择用GateWay来做API网关。</p>
+<p>​    GateWay中定义了一个GlobalFilter接口，该接口直译为全局的过滤器，我们知道API网关的本质就是一个或者多个过滤器，因此我们找到该项目中GlobalFilter接口的实现类。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083832.png"></p>
+<p>​    该类重写了接口中的filter()方法，接收一个ServerWebExchange参数和GatewayFilterChain参数，GatewayFilterChain是一个放行链，其接收参数为一系列过滤器的列表，表示可以对这些过滤器进行建立或者放行。我们重点关注ServerWebExchange参数。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083843.png"></p>
+<p>​    如上图，ServerWebExchange参数有请求和相应两个数据域，表示从ServerWebExchange参数中我们可以得到从用户那传递过来的请求的具体信息。于是有了下面这一步，从ServerWebExchange中得到请求的信息。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083854.png"></p>
+<p>然后根据具体的内容，GateWay重写对应的请求路径，将请求实现转发或者重定向。</p>
+<p><img src="http://fl.ljuuu.com/img/20210317083903.png"></p>
+<p>实际上，这里GateWay整个可以看成进入应用程序之前的过滤器，拦截所有请求，然后根据请求内容将请求转发或重定向到具体的业务实现部分，GateWay充当一个中介的作用。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhangs1986/p/10546973.html">https://www.cnblogs.com/zhangs1986/p/10546973.html</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41217541/article/details/104718834">https://blog.csdn.net/weixin_41217541/article/details/104718834</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://pig4cloud.com/home">https://pig4cloud.com/home</a></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+     
+       <div>
+         <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+       </div>
+     
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/zhuferron.github.io/tags/SpringCloud/" rel="tag"># SpringCloud</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%BA%8C)%20/" rel="prev" title="微服务架构及Pig项目分析(二)：SpringCloud微服务技术">
+      <i class="fa fa-chevron-left"></i> 微服务架构及Pig项目分析(二)：SpringCloud微服务技术
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">项目简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">项目技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nacos-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Nacos 服务注册与发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ribbon%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">2.2.</span> <span class="nav-text">Ribbon负载均衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GateWay%E4%B8%9A%E5%8A%A1%E7%BD%91%E5%85%B3"><span class="nav-number">2.3.</span> <span class="nav-text">GateWay业务网关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sentinel-%E6%B5%81%E9%87%8F%E4%BF%9D%E6%8A%A4"><span class="nav-number">2.4.</span> <span class="nav-text">Sentinel 流量保护</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">3.1.</span> <span class="nav-text">注册中心源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GateWay%E8%B7%AF%E7%94%B1%E7%BD%91%E5%85%B3%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">3.2.</span> <span class="nav-text">GateWay路由网关源码分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ferron"
+      src="/zhuferron.github.io/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Ferron</p>
+  <div class="site-description" itemprop="description">何谈三观，褒贬任剪，笑骂随便</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/zhuferron.github.io/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/zhuferron.github.io/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/zhuferron.github.io/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-3-11 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ferron</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/zhuferron.github.io/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/zhuferron.github.io/lib/anime.min.js"></script>
+  <script src="/zhuferron.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/zhuferron.github.io/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/zhuferron.github.io/js/utils.js"></script>
+
+<script src="/zhuferron.github.io/js/motion.js"></script>
+
+
+<script src="/zhuferron.github.io/js/schemes/pisces.js"></script>
+
+
+<script src="/zhuferron.github.io/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/zhuferron.github.io/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/zhuferron.github.io/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":210,"height":306},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
