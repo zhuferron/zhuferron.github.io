@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://fl.ljuuu.com/image-20201217144918428.png">
 <meta property="og:image" content="http://fl.ljuuu.com/image-20201217150332564.png">
 <meta property="article:published_time" content="2021-03-12T06:49:29.634Z">
-<meta property="article:modified_time" content="2021-03-16T09:39:04.584Z">
+<meta property="article:modified_time" content="2021-03-23T14:10:13.222Z">
 <meta property="article:author" content="Ferron">
 <meta property="article:tag" content="JavaWeb">
 <meta name="twitter:card" content="summary">
@@ -203,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-16 17:39:04" itemprop="dateModified" datetime="2021-03-16T17:39:04+08:00">2021-03-16</time>
+                <time title="修改时间：2021-03-23 22:10:13" itemprop="dateModified" datetime="2021-03-23T22:10:13+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,7 +227,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="MVC三层架构"><a href="#MVC三层架构" class="headerlink" title="MVC三层架构"></a>MVC三层架构</h2><p>什么是MVC：</p>
+        <h2 id="10、MVC三层架构"><a href="#10、MVC三层架构" class="headerlink" title="10、MVC三层架构"></a>10、MVC三层架构</h2><p>什么是MVC：</p>
 <p>Servlet和jsp都可以写java代码：为了易于维护和使用；Servlet专注于处理请求，以及控制视图跳转；jsp专注于显示数据。</p>
 <ul>
 <li>Model：模型 ，实体类中对应的一个个字段 </li>
@@ -243,11 +243,11 @@
 </ul>
 </li>
 </ul>
-<h3 id="以前架构"><a href="#以前架构" class="headerlink" title="以前架构"></a>以前架构</h3><p>用户直接访问控制层，控制层就可以直接操作数据库</p>
+<h3 id="10-1、以前架构"><a href="#10-1、以前架构" class="headerlink" title="10.1、以前架构"></a>10.1、以前架构</h3><p>用户直接访问控制层，控制层就可以直接操作数据库</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">servlet---&gt;CRUD---&gt;数据库</span><br><span class="line">弊端：程序十分臃肿，不利于维护   </span><br><span class="line">servlet的代码中：处理请求、响应、视图跳转、处理JDBC，处理业务代码，处理逻辑代码</span><br><span class="line">    </span><br><span class="line">架构：没有什么是加一层解决不了的！</span><br></pre></td></tr></table></figure>
 
 <p><img src="http://fl.ljuuu.com/image-20201217142330933.png" alt="image-20201217142330933"></p>
-<h3 id="三层架构"><a href="#三层架构" class="headerlink" title="三层架构"></a>三层架构</h3><p><img src="http://fl.ljuuu.com/image-20201217144918428.png" alt="image-20201217144918428"></p>
+<h3 id="10-2、三层架构"><a href="#10-2、三层架构" class="headerlink" title="10.2、三层架构"></a>10.2、三层架构</h3><p><img src="http://fl.ljuuu.com/image-20201217144918428.png" alt="image-20201217144918428"></p>
 <p>Model：</p>
 <ul>
 <li>业务处理：业务逻辑(Service)</li>
@@ -266,7 +266,7 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">登录---&gt;接收用户的登录请求---&gt;处理用户的请求(获取用户登录的参数，username，password)---&gt;交给业务层处理登录业务(判断用户名密码是否正确：事务)---&gt;Dao层查询用户名和密码是否正确---&gt;数据库</span><br></pre></td></tr></table></figure>
 
-<h2 id="Filter（重点）"><a href="#Filter（重点）" class="headerlink" title="Filter（重点）"></a>Filter（重点）</h2><p>Shiro</p>
+<h2 id="11、Filter（重点）"><a href="#11、Filter（重点）" class="headerlink" title="11、Filter（重点）"></a>11、Filter（重点）</h2><p>Shiro</p>
 <p>Filter：过滤器，用来过滤网站的数据；</p>
 <ul>
 <li>处理中文乱码</li>
@@ -286,7 +286,7 @@
 <li><p>在web.xml中配置Filter过滤器</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;filter&gt;</span><br><span class="line">        &lt;filter-name&gt;CharacterEncodingFilter&lt;/filter-name&gt;</span><br><span class="line">        &lt;filter-<span class="class"><span class="keyword">class</span>&gt;<span class="title">com</span>.<span class="title">ferron</span>.<span class="title">filter</span>.<span class="title">CharacterEncodingFilter</span>&lt;/<span class="title">filter</span>-<span class="title">class</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;/<span class="title">filter</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">filter</span>-<span class="title">mapping</span>&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">filter</span>-<span class="title">name</span>&gt;<span class="title">CharacterEncodingFilter</span>&lt;/<span class="title">filter</span>-<span class="title">name</span>&gt;</span></span><br><span class="line"><span class="class">        &lt;!--只要是/<span class="title">service</span>的任何请求，都会经过这个过滤器--&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">url</span>-<span class="title">pattern</span>&gt;/<span class="title">servlet</span>/*&lt;/<span class="title">url</span>-<span class="title">pattern</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;/<span class="title">filter</span>-<span class="title">mapping</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="监听器"><a href="#监听器" class="headerlink" title="监听器"></a>监听器</h2><p>实现一个监听器的接口；(有N种)</p>
+<h2 id="12、监听器"><a href="#12、监听器" class="headerlink" title="12、监听器"></a>12、监听器</h2><p>实现一个监听器的接口；(有N种)</p>
 <ol>
 <li><p>编写一个监听器</p>
 <ol>
@@ -298,14 +298,14 @@
 <li><p>看情况是否使用</p>
 </li>
 </ol>
-<h2 id="过滤器，监听器的常见应用"><a href="#过滤器，监听器的常见应用" class="headerlink" title="过滤器，监听器的常见应用"></a>过滤器，监听器的常见应用</h2><p>用户登录之后才能进入主页！用户注销之后就不能进入</p>
+<h2 id="13、过滤器，监听器的常见应用"><a href="#13、过滤器，监听器的常见应用" class="headerlink" title="13、过滤器，监听器的常见应用"></a>13、过滤器，监听器的常见应用</h2><p>用户登录之后才能进入主页！用户注销之后就不能进入</p>
 <ol>
 <li><p>用户登录之后，向session放入用户的数据</p>
 </li>
 <li><p>进入主页的时候要判断用户是否登录；要求：在过滤器中实现</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HttpServletRequest request = (HttpServletRequest) servletRequest;</span><br><span class="line">        HttpServletResponse response = (HttpServletResponse) servletResponse;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(request.getSession().getAttribute(Constant.USER_SESSION) == <span class="keyword">null</span>)&#123;</span><br><span class="line">            response.sendRedirect(<span class="string">&quot;/error.jsp&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        filterChain.doFilter(servletRequest,servletResponse);</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="常用代码"><a href="#常用代码" class="headerlink" title="常用代码"></a>常用代码</h2><p>配置类：</p>
+<h2 id="14、常用代码"><a href="#14、常用代码" class="headerlink" title="14、常用代码"></a>14、常用代码</h2><p>配置类：</p>
 <p>pom.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.ferron<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javaweb-session-cookie<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -446,7 +446,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-text">MVC三层架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E5%89%8D%E6%9E%B6%E6%9E%84"><span class="nav-text">以前架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-text">三层架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Filter%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-text">Filter（重点）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-text">监听器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%8C%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8"><span class="nav-text">过滤器，监听器的常见应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%A0%81"><span class="nav-text">常用代码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#10%E3%80%81MVC%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-text">10、MVC三层架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1%E3%80%81%E4%BB%A5%E5%89%8D%E6%9E%B6%E6%9E%84"><span class="nav-text">10.1、以前架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2%E3%80%81%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-text">10.2、三层架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E3%80%81Filter%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-text">11、Filter（重点）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12%E3%80%81%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-text">12、监听器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%8C%E7%9B%91%E5%90%AC%E5%99%A8%E7%9A%84%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8"><span class="nav-text">13、过滤器，监听器的常见应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14%E3%80%81%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%A0%81"><span class="nav-text">14、常用代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
