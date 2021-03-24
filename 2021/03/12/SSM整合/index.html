@@ -30,7 +30,7 @@
 <meta property="og:description" content="S(Spring)S(SpringMVC)M(Mybatis)整合流程">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-12T10:49:24.089Z">
-<meta property="article:modified_time" content="2021-03-12T10:50:59.336Z">
+<meta property="article:modified_time" content="2021-03-24T06:30:52.159Z">
 <meta property="article:author" content="Ferron">
 <meta property="article:tag" content="SSM">
 <meta name="twitter:card" content="summary">
@@ -191,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-12 18:49:24 / 修改时间：18:50:59" itemprop="dateCreated datePublished" datetime="2021-03-12T18:49:24+08:00">2021-03-12</time>
+              <time title="创建时间：2021-03-12 18:49:24" itemprop="dateCreated datePublished" datetime="2021-03-12T18:49:24+08:00">2021-03-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-24 14:30:52" itemprop="dateModified" datetime="2021-03-24T14:30:52+08:00">2021-03-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -217,16 +223,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h3><ul>
+        <h3 id="1、环境要求"><a href="#1、环境要求" class="headerlink" title="1、环境要求"></a>1、环境要求</h3><ul>
 <li>IDEA</li>
 <li>MySQL 5.7</li>
 <li>Tomcat 9</li>
 <li>Maven 3.6</li>
 </ul>
-<h3 id="数据库环境"><a href="#数据库环境" class="headerlink" title="数据库环境"></a>数据库环境</h3><p>创建一个存放书籍数据的数据库表</p>
+<h3 id="2、数据库环境"><a href="#2、数据库环境" class="headerlink" title="2、数据库环境"></a>2、数据库环境</h3><p>创建一个存放书籍数据的数据库表</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE `ssmbuild`</span><br><span class="line"></span><br><span class="line">USE `ssmbuild`</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `books`(</span><br><span class="line">`bookID` <span class="type">INT</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT COMMENT <span class="string">&#x27;书id&#x27;</span>,</span><br><span class="line">`bookName` <span class="type">VARBINARY</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;书名&#x27;</span>,</span><br><span class="line">`bookCounts` <span class="type">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;数量&#x27;</span>,</span><br><span class="line">`detail` <span class="type">VARBINARY</span>(<span class="number">200</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;描述&#x27;</span>,</span><br><span class="line">KEY `bookID`(`bookID`)</span><br><span class="line">)ENGINE<span class="operator">=</span>INNODB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `books`(`bookID`,`bookName`,`bookCounts`,`detail`) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">1</span>,<span class="string">&#x27;Java&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;从入门到放弃&#x27;</span>),</span><br><span class="line">(<span class="number">2</span>,<span class="string">&#x27;MySQL&#x27;</span>,<span class="number">10</span>,<span class="string">&#x27;从删库到跑路&#x27;</span>),</span><br><span class="line">(<span class="number">3</span>,<span class="string">&#x27;Linux&#x27;</span>,<span class="number">5</span>,<span class="string">&#x27;从进门到进牢&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<h3 id="基本环境搭建"><a href="#基本环境搭建" class="headerlink" title="基本环境搭建"></a>基本环境搭建</h3><ol>
+<h3 id="3、基本环境搭建"><a href="#3、基本环境搭建" class="headerlink" title="3、基本环境搭建"></a>3、基本环境搭建</h3><ol>
 <li><p>新建Maven项目</p>
 </li>
 <li><p>导入依赖</p>
@@ -242,7 +248,7 @@
 <li><p>applicationContext.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">        https://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="Mybatis层"><a href="#Mybatis层" class="headerlink" title="Mybatis层"></a>Mybatis层</h3><ol>
+<h3 id="4、Mybatis层"><a href="#4、Mybatis层" class="headerlink" title="4、Mybatis层"></a>4、Mybatis层</h3><ol>
 <li><p>数据库配置文件database.properties</p>
 <p>如果使用MySQL8.0+，需要增加一个时区的配置：&amp;serverTimezone=Asia/Shanghai</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">jdbc.driver</span>=<span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="meta">jdbc.url</span>=<span class="string">jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8</span></span><br><span class="line"><span class="meta">jdbc.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">jdbc.password</span>=<span class="string">sanfashi</span></span><br></pre></td></tr></table></figure></li>
@@ -268,7 +274,7 @@
 <p>实际上service层就是一个代理层，dao层是实际上的调数据，而service则是一个代理层，需要加什么附属操作就在service层加，而<strong>service则只是调dao层</strong>。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ferron.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ferron.dao.BookMapper;</span><br><span class="line"><span class="keyword">import</span> com.ferron.pojo.Books;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookServiceImpl</span> <span class="keyword">implements</span> <span class="title">BookService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//service层调dao层：组合Dao层</span></span><br><span class="line">    <span class="keyword">private</span> BookMapper bookMapper;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBookMapper</span><span class="params">(BookMapper bookMapper)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.bookMapper=bookMapper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addBook</span><span class="params">(Books books)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookMapper.addBook(books);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteBookById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookMapper.deleteBookById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">updateBook</span><span class="params">(Books books)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookMapper.updateBook(books);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Books <span class="title">queryBookById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookMapper.queryBookById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Books&gt; <span class="title">queryAllBook</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookMapper.queryAllBook();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="Spring层"><a href="#Spring层" class="headerlink" title="Spring层"></a>Spring层</h3><p><strong>Spring层只是整合dao层和service层</strong></p>
+<h3 id="5、Spring层"><a href="#5、Spring层" class="headerlink" title="5、Spring层"></a>5、Spring层</h3><p><strong>Spring层只是整合dao层和service层</strong></p>
 <ol>
 <li><p>编写spring-dao.xml文件，整合dao层</p>
 <ol>
@@ -289,7 +295,7 @@
 <li><p>在applicationContext.xml中import写好的spring-dao.xml和spring-service.xml</p>
 </li>
 </ol>
-<h3 id="SpringMVC层"><a href="#SpringMVC层" class="headerlink" title="SpringMVC层"></a>SpringMVC层</h3><ol>
+<h3 id="6、SpringMVC层"><a href="#6、SpringMVC层" class="headerlink" title="6、SpringMVC层"></a>6、SpringMVC层</h3><ol>
 <li><p>添加web框架支持</p>
 </li>
 <li><p>编写web.xml</p>
@@ -300,10 +306,10 @@
 <li><p>在WEB-INF目录下建jsp文件夹</p>
 </li>
 </ol>
-<h3 id="小提示"><a href="#小提示" class="headerlink" title="小提示"></a>小提示</h3><ol>
+<h3 id="7、小提示"><a href="#7、小提示" class="headerlink" title="7、小提示"></a>7、小提示</h3><ol>
 <li>在项目结构中添加lib。</li>
 </ol>
-<h3 id="业务"><a href="#业务" class="headerlink" title="业务"></a>业务</h3><h4 id="查询所有书籍"><a href="#查询所有书籍" class="headerlink" title="查询所有书籍"></a>查询所有书籍</h4><ol>
+<h3 id="8、业务"><a href="#8、业务" class="headerlink" title="8、业务"></a>8、业务</h3><h4 id="8-1、查询所有书籍"><a href="#8-1、查询所有书籍" class="headerlink" title="8.1、查询所有书籍"></a>8.1、查询所有书籍</h4><ol>
 <li>用户进入首页，点击进入书籍页面</li>
 <li>控制器收到请求，调service方法查询所有书籍，并且返回视图层</li>
 <li>进入allBook.jsp页面，展示书籍</li>
@@ -317,7 +323,7 @@
 <p>allbook.jsp</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;row clearfix&quot;</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;col-md-12 columns&quot;</span>&gt;</span><br><span class="line">        &lt;table <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;table table-hover table-striped&quot;</span>&gt;</span><br><span class="line">            &lt;thead&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                    &lt;th&gt;书籍编号&lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;书籍名称&lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;书籍数量&lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;书籍详情&lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;操作&lt;/th&gt;</span><br><span class="line"></span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">            &lt;/thead&gt;</span><br><span class="line">            &lt;%--书籍从数据库中查询出来，从这个list中遍历出来：foreach--%&gt;</span><br><span class="line">            &lt;tbody&gt;</span><br><span class="line">                &lt;c:forEach <span class="keyword">var</span>=<span class="string">&quot;book&quot;</span> items=<span class="string">&quot;$&#123;list&#125;&quot;</span>&gt;</span><br><span class="line">                    &lt;tr&gt;</span><br><span class="line">                        &lt;td&gt;$&#123;book.bookID&#125;&lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;$&#123;book.bookName&#125;&lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;$&#123;book.bookCounts&#125;&lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;$&#123;book.detail&#125;&lt;/td&gt;</span><br><span class="line">                    &lt;/tr&gt;</span><br><span class="line">                &lt;/c:forEach&gt;</span><br><span class="line">            &lt;/tbody&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
 
-<h4 id="增加书籍"><a href="#增加书籍" class="headerlink" title="增加书籍"></a>增加书籍</h4><ol>
+<h4 id="8-2、增加书籍"><a href="#8-2、增加书籍" class="headerlink" title="8.2、增加书籍"></a>8.2、增加书籍</h4><ol>
 <li>用户在全部书籍页面点击增加书籍按钮，跳转到增加书籍页面</li>
 <li>编写跳转到增加书籍页面控制器</li>
 <li>增加书籍页面有form表单，输入书籍信息之后点击增加，跳转回所有书籍页面</li>
@@ -339,7 +345,7 @@
 <p>增加书籍控制器</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加书籍的请求</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/addBook&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">addBook</span><span class="params">(Books books)</span></span>&#123;</span><br><span class="line">    bookService.addBook(books);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;redirect:/book/allBooks&quot;</span>;  <span class="comment">//重定向到一个请求</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="修改和删除书籍"><a href="#修改和删除书籍" class="headerlink" title="修改和删除书籍"></a>修改和删除书籍</h4><ol>
+<h4 id="8-3、修改和删除书籍"><a href="#8-3、修改和删除书籍" class="headerlink" title="8.3、修改和删除书籍"></a>8.3、修改和删除书籍</h4><ol>
 <li>在所有书籍背后增加一个修改和删除的按钮</li>
 <li>点击修改，跳转至修改书籍页面，编写跳转修改书籍页面的控制器和页面</li>
 <li>点击修改书籍页面的修改按钮，实现修改。编写修改书籍的控制器</li>
@@ -363,7 +369,7 @@
 <p>删除控制器</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除数据</span></span><br><span class="line"><span class="comment">//Restful风格</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/deleteBook/&#123;bookId&#125;&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">deleteBook</span><span class="params">(<span class="meta">@PathVariable(&quot;bookId&quot;)</span> <span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    bookService.deleteBookById(id);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;redirect:/book/allBooks&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="根据书名查询"><a href="#根据书名查询" class="headerlink" title="根据书名查询"></a>根据书名查询</h4><ol>
+<h4 id="8-4、根据书名查询"><a href="#8-4、根据书名查询" class="headerlink" title="8.4、根据书名查询"></a>8.4、根据书名查询</h4><ol>
 <li>在所有书籍页面增加查询框</li>
 <li>输入书名，点击查询。</li>
 <li>先重新写dao层的接口，然后写实现的sql，再写service层的接口和实现类。</li>
@@ -493,7 +499,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82"><span class="nav-text">环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%AF%E5%A2%83"><span class="nav-text">数据库环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">基本环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E5%B1%82"><span class="nav-text">Mybatis层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring%E5%B1%82"><span class="nav-text">Spring层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringMVC%E5%B1%82"><span class="nav-text">SpringMVC层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%8F%90%E7%A4%BA"><span class="nav-text">小提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1"><span class="nav-text">业务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E4%B9%A6%E7%B1%8D"><span class="nav-text">查询所有书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E4%B9%A6%E7%B1%8D"><span class="nav-text">增加书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%92%8C%E5%88%A0%E9%99%A4%E4%B9%A6%E7%B1%8D"><span class="nav-text">修改和删除书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E4%B9%A6%E5%90%8D%E6%9F%A5%E8%AF%A2"><span class="nav-text">根据书名查询</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82"><span class="nav-text">1、环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%AF%E5%A2%83"><span class="nav-text">2、数据库环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">3、基本环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81Mybatis%E5%B1%82"><span class="nav-text">4、Mybatis层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81Spring%E5%B1%82"><span class="nav-text">5、Spring层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81SpringMVC%E5%B1%82"><span class="nav-text">6、SpringMVC层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E5%B0%8F%E6%8F%90%E7%A4%BA"><span class="nav-text">7、小提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%E3%80%81%E4%B8%9A%E5%8A%A1"><span class="nav-text">8、业务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1%E3%80%81%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E4%B9%A6%E7%B1%8D"><span class="nav-text">8.1、查询所有书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2%E3%80%81%E5%A2%9E%E5%8A%A0%E4%B9%A6%E7%B1%8D"><span class="nav-text">8.2、增加书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3%E3%80%81%E4%BF%AE%E6%94%B9%E5%92%8C%E5%88%A0%E9%99%A4%E4%B9%A6%E7%B1%8D"><span class="nav-text">8.3、修改和删除书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-4%E3%80%81%E6%A0%B9%E6%8D%AE%E4%B9%A6%E5%90%8D%E6%9F%A5%E8%AF%A2"><span class="nav-text">8.4、根据书名查询</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://fl.ljuuu.com/image-20210131132922027.png">
 <meta property="og:image" content="http://fl.ljuuu.com/image-20210131162152044.png">
 <meta property="article:published_time" content="2021-03-12T11:02:58.281Z">
-<meta property="article:modified_time" content="2021-03-17T00:27:23.238Z">
+<meta property="article:modified_time" content="2021-03-24T06:23:52.362Z">
 <meta property="article:author" content="Ferron">
 <meta property="article:tag" content="SpringBoot">
 <meta name="twitter:card" content="summary">
@@ -205,7 +205,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-17 08:27:23" itemprop="dateModified" datetime="2021-03-17T08:27:23+08:00">2021-03-17</time>
+                <time title="修改时间：2021-03-24 14:23:52" itemprop="dateModified" datetime="2021-03-24T14:23:52+08:00">2021-03-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +229,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="swagger"><a href="#swagger" class="headerlink" title="swagger"></a>swagger</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>前后端分离：Vue+springboot</p>
+        <h2 id="11、swagger"><a href="#11、swagger" class="headerlink" title="11、swagger"></a>11、swagger</h2><h3 id="11-1、概述"><a href="#11-1、概述" class="headerlink" title="11.1、概述"></a>11.1、概述</h3><p>前后端分离：Vue+springboot</p>
 <p>后端时代：前端只用管理静态页面；html==&gt;后端，模板引擎：jsp==&gt;后端是主力</p>
 <p>前后端分离时代：</p>
 <ul>
@@ -266,7 +266,7 @@
 <li>swagger2</li>
 <li>ui</li>
 </ul>
-<h3 id="springboot集成"><a href="#springboot集成" class="headerlink" title="springboot集成"></a>springboot集成</h3><ul>
+<h3 id="11-2、springboot集成"><a href="#11-2、springboot集成" class="headerlink" title="11.2、springboot集成"></a>11.2、springboot集成</h3><ul>
 <li><p>新建一个项目</p>
 </li>
 <li><p>导入相关依赖</p>
@@ -277,10 +277,10 @@
 <p><img src="http://fl.ljuuu.com/image-20210130102158388.png" alt="image-20210130102158388"></p>
 </li>
 </ul>
-<h3 id="配置swagger"><a href="#配置swagger" class="headerlink" title="配置swagger"></a>配置swagger</h3><p>swagger的bean实例Docket</p>
+<h3 id="11-3、配置swagger"><a href="#11-3、配置swagger" class="headerlink" title="11.3、配置swagger"></a>11.3、配置swagger</h3><p>swagger的bean实例Docket</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger2</span>           <span class="comment">//开启Swagger2</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置了Swagger的Docket的bean实例</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">docket</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .apiInfo(apiInfo());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置Swagger信息=apiInfo</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//自定义swagger网站信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfo(</span><br><span class="line">                <span class="string">&quot;Ferron的Swagger文档&quot;</span>,</span><br><span class="line">                <span class="string">&quot;Api Documentation&quot;</span>,</span><br><span class="line">                <span class="string">&quot;1.0&quot;</span>,</span><br><span class="line">                <span class="string">&quot;urn:tos&quot;</span>, DEFAULT_CONTACT,</span><br><span class="line">                <span class="string">&quot;Apache 2.0&quot;</span>,</span><br><span class="line">                <span class="string">&quot;http://www.apache.org/licenses/LICENSE-2.0&quot;</span>,</span><br><span class="line">                <span class="keyword">new</span> ArrayList());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="Swagger配置扫描接口"><a href="#Swagger配置扫描接口" class="headerlink" title="Swagger配置扫描接口"></a>Swagger配置扫描接口</h3><p><strong>Docket.select()</strong></p>
+<h3 id="11-4、Swagger配置扫描接口"><a href="#11-4、Swagger配置扫描接口" class="headerlink" title="11.4、Swagger配置扫描接口"></a>11.4、Swagger配置扫描接口</h3><p><strong>Docket.select()</strong></p>
 <p>配置扫描的接口：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">        .apiInfo(apiInfo())</span><br><span class="line">        .select()</span><br><span class="line">        <span class="comment">//RequestHandlerSelectors 配置要扫描接口的方式</span></span><br><span class="line">        <span class="comment">//basePackage()：指定要扫描接口的包</span></span><br><span class="line">        <span class="comment">//any():扫描全部</span></span><br><span class="line">        <span class="comment">//none()：全部不扫描</span></span><br><span class="line">        <span class="comment">//withClassAnnotation:扫描类上的注解，参数是一个注解的反射对象</span></span><br><span class="line">        <span class="comment">//withMethodAnnotation:扫描方法上的注解</span></span><br><span class="line">        .apis(RequestHandlerSelectors.basePackage(<span class="string">&quot;com.ferron.controller&quot;</span>))</span><br><span class="line">        <span class="comment">//过滤什么路径：过滤只有ferron的请求</span></span><br><span class="line">        .paths(PathSelectors.ant(<span class="string">&quot;/ferron/**&quot;</span>))</span><br><span class="line">        .build();  <span class="comment">//bulid 工厂模式</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -291,14 +291,14 @@
 <ul>
 <li>设置两套环境</li>
 </ul>
-<h3 id="配置API分组"><a href="#配置API分组" class="headerlink" title="配置API分组"></a>配置API分组</h3><p>上面分组框的分组</p>
+<h3 id="11-5、配置API分组"><a href="#11-5、配置API分组" class="headerlink" title="11.5、配置API分组"></a>11.5、配置API分组</h3><p>上面分组框的分组</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//配置了Swagger的Docket的bean实例</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">        .apiInfo(apiInfo())</span><br><span class="line">        .groupName(<span class="string">&quot;ferron&quot;</span>)</span><br><span class="line">        .select()</span><br><span class="line">        .apis(RequestHandlerSelectors.basePackage(<span class="string">&quot;com.ferron.controller&quot;</span>))</span><br><span class="line">        .paths(PathSelectors.ant(<span class="string">&quot;/ferron/**&quot;</span>))</span><br><span class="line">        .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如何配置多个组：</p>
 <p>在SwaggerConfig类中创建多个返回Docket的不同方法，创建多个分组。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket1</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).groupName(<span class="string">&quot;A&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket2</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).groupName(<span class="string">&quot;B&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket3</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).groupName(<span class="string">&quot;C&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="实体类配置"><a href="#实体类配置" class="headerlink" title="实体类配置"></a>实体类配置</h3><p><strong>Model：</strong></p>
+<h3 id="11-6、实体类配置"><a href="#11-6、实体类配置" class="headerlink" title="11.6、实体类配置"></a>11.6、实体类配置</h3><p><strong>Model：</strong></p>
 <ul>
 <li><p>创建pojo类，新建User实体类</p>
 </li>
@@ -307,7 +307,7 @@
 <li><p>使用<code>@ApiModel</code>给实体类加注释，使用<code>@ApiModelProperty</code>给实体类字段加注释</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiModel(&quot;用户实体类&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty(&quot;用户名&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String username;</span><br><span class="line">    <span class="meta">@ApiModelProperty(&quot;密码&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String password;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="接口文档配置"><a href="#接口文档配置" class="headerlink" title="接口文档配置"></a>接口文档配置</h3><ul>
+<h3 id="11-7、接口文档配置"><a href="#11-7、接口文档配置" class="headerlink" title="11.7、接口文档配置"></a>11.7、接口文档配置</h3><ul>
 <li><p>不能给整个控制器加注释</p>
 </li>
 <li><p>给控制器里面的某个接口加注释</p>
@@ -315,12 +315,12 @@
 <li><p>给某个接口里面的参数加注释</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiOperation(&quot;Hello控制类&quot;)</span></span><br><span class="line"><span class="meta">@GetMapping(value = &quot;/hello2&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">hello2</span><span class="params">(<span class="meta">@ApiParam(&quot;用户名&quot;)</span> String username)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello&quot;</span>+username;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<h3 id="11-8、总结"><a href="#11-8、总结" class="headerlink" title="11.8、总结"></a>11.8、总结</h3><ul>
 <li>在线测试</li>
 <li>实时更新</li>
 <li>【注意点】在正式发布的时候，关闭Swagger！</li>
 </ul>
-<h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h2><h3 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h3><p><strong>使用多线程体验：</strong></p>
+<h2 id="12、任务"><a href="#12、任务" class="headerlink" title="12、任务"></a>12、任务</h2><h3 id="12-1、异步任务"><a href="#12-1、异步任务" class="headerlink" title="12.1、异步任务"></a>12.1、异步任务</h3><p><strong>使用多线程体验：</strong></p>
 <p>service层：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;消息正在处理&quot;</span>);</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -337,7 +337,7 @@
 <p><strong>注：要在主类中开启异步任务注解</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开启异步注解功能</span></span><br><span class="line"><span class="meta">@EnableAsync</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBoot08TestApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(SpringBoot08TestApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="邮件任务"><a href="#邮件任务" class="headerlink" title="邮件任务"></a>邮件任务</h3><ul>
+<h3 id="12-2、邮件任务"><a href="#12-2、邮件任务" class="headerlink" title="12.2、邮件任务"></a>12.2、邮件任务</h3><ul>
 <li><p>导入相关依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-mail<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
 <li><p>在application.properties中配置</p>
@@ -349,19 +349,19 @@
 <li><p><strong>封装成一个方法</strong></p>
 </li>
 </ul>
-<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><ul>
+<h3 id="12-3、定时任务"><a href="#12-3、定时任务" class="headerlink" title="12.3、定时任务"></a>12.3、定时任务</h3><ul>
 <li><p>开启定时任务的注解</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableScheduling</span> </span><br></pre></td></tr></table></figure></li>
 <li><p>写一个定时任务【重点：cron表达式】</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在一个特定的时间执行这个方法</span></span><br><span class="line">    <span class="comment">//cron表达式</span></span><br><span class="line">    <span class="comment">//秒 分 时 日 月 周几</span></span><br><span class="line">    <span class="meta">@Scheduled(cron = &quot;0 23 12 * * ?&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello,你被执行了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="分布式-Dubbo-Zookeeper"><a href="#分布式-Dubbo-Zookeeper" class="headerlink" title="分布式 Dubbo Zookeeper"></a>分布式 Dubbo Zookeeper</h2><h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><p>分布式系统是若干个独立计算机的集合，但是对于用户来说就像一个系统</p>
+<h2 id="13、分布式-Dubbo-Zookeeper"><a href="#13、分布式-Dubbo-Zookeeper" class="headerlink" title="13、分布式 Dubbo Zookeeper"></a>13、分布式 Dubbo Zookeeper</h2><h3 id="13-1、分布式"><a href="#13-1、分布式" class="headerlink" title="13.1、分布式"></a>13.1、分布式</h3><p>分布式系统是若干个独立计算机的集合，但是对于用户来说就像一个系统</p>
 <ul>
 <li>服务器内部交互：http，RPC</li>
 <li>最开始服务只是一个单机，当单机处理不了时，再考虑分布式</li>
 </ul>
 <p><img src="https://dubbo.apache.org/imgs/user/dubbo-architecture-roadmap.jpg" alt="image"></p>
-<h3 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h3><ul>
+<h3 id="13-2、RPC"><a href="#13-2、RPC" class="headerlink" title="13.2、RPC"></a>13.2、RPC</h3><ul>
 <li>Remote Procedure Call是远程过程调用，是一种进程间通信方式</li>
 <li>它是一种技术的思想，而不是规范</li>
 <li>它允许程序调用另一个地址空间(通常是共享网络的另一台机器上)的过程或函数，而不用程序员显式编码这个远程调用的细节</li>
@@ -373,24 +373,24 @@
 </ul>
 </li>
 </ul>
-<h3 id="Dubbo"><a href="#Dubbo" class="headerlink" title="Dubbo"></a>Dubbo</h3><ul>
+<h3 id="13-3、Dubbo"><a href="#13-3、Dubbo" class="headerlink" title="13.3、Dubbo"></a>13.3、Dubbo</h3><ul>
 <li>Dubbo是一款高性能、轻量级的开源Java RPC框架</li>
 <li>面向接口的远程方法调用</li>
 <li>智能容错和负载均衡</li>
 <li>服务自动注册和发现</li>
 </ul>
 <p><img src="https://dubbo.apache.org/imgs/user/dubbo-architecture.jpg" alt="dubbo-architucture"></p>
-<h3 id="Zookeeper：管理Hadoop-Hive"><a href="#Zookeeper：管理Hadoop-Hive" class="headerlink" title="Zookeeper：管理Hadoop Hive.."></a>Zookeeper：管理Hadoop Hive..</h3><ul>
+<h3 id="13-4、Zookeeper：管理Hadoop-Hive"><a href="#13-4、Zookeeper：管理Hadoop-Hive" class="headerlink" title="13.4、Zookeeper：管理Hadoop Hive.."></a>13.4、Zookeeper：管理Hadoop Hive..</h3><ul>
 <li>Zookeeper是 Apache Hadoop 的子项目，是一个树型的目录服务</li>
 <li>支持变更推送，适合作为 Dubbo 服务的注册中心，工业强度较高，可用于生产环境，并推荐使用</li>
 </ul>
-<h3 id="Zookeeper安装"><a href="#Zookeeper安装" class="headerlink" title="Zookeeper安装"></a>Zookeeper安装</h3><ul>
+<h3 id="13-5、Zookeeper安装"><a href="#13-5、Zookeeper安装" class="headerlink" title="13.5、Zookeeper安装"></a>13.5、Zookeeper安装</h3><ul>
 <li>使用镜像下载Zookeeper，并解压【注意：要下载带有bin的】</li>
 <li>启动bin目录下的<code>zkServer.cmd</code>，注意加入<code>pause</code>排错</li>
 <li>进入config目录加入<code>zoo.cfg</code>文件，再启动。</li>
 <li>保持服务端启动，启动用户端<code>zkCli.cmd</code>，连接成功</li>
 </ul>
-<h3 id="Dubbo-admin安装"><a href="#Dubbo-admin安装" class="headerlink" title="Dubbo-admin安装"></a>Dubbo-admin安装</h3><ul>
+<h3 id="13-6、Dubbo-admin安装"><a href="#13-6、Dubbo-admin安装" class="headerlink" title="13.6、Dubbo-admin安装"></a>13.6、Dubbo-admin安装</h3><ul>
 <li>Dubbo本身不是一个服务软件，实质上就是一个jar包，能够帮你的java程序连接到Zookeeper，并且利用Zookeeper消费，提供服务</li>
 <li>为了让用户更好的管理监控众多的dubbo服务，官方提供了一个可视化的监控程序dubbo-admin</li>
 </ul>
@@ -416,7 +416,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="整合dubbo-zookeeper"><a href="#整合dubbo-zookeeper" class="headerlink" title="整合dubbo+zookeeper"></a>整合dubbo+zookeeper</h3><ul>
+<h3 id="13-7、整合dubbo-zookeeper"><a href="#13-7、整合dubbo-zookeeper" class="headerlink" title="13.7、整合dubbo+zookeeper"></a>13.7、整合dubbo+zookeeper</h3><ul>
 <li><p>新建两个module，一个是provider，一个是consumer</p>
 </li>
 <li><p>provider中编写对应的service接口和具体实现类</p>
@@ -443,7 +443,7 @@
 <li><p>测试</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">UserService userService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    userService.buyTicker();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><p><strong>前提：zookeeper服务一直开启</strong></p>
+<h3 id="13-8、使用步骤"><a href="#13-8、使用步骤" class="headerlink" title="13.8、使用步骤"></a>13.8、使用步骤</h3><p><strong>前提：zookeeper服务一直开启</strong></p>
 <ol>
 <li>提供者提供服务<ol>
 <li>导入依赖</li>
@@ -581,7 +581,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#swagger"><span class="nav-text">swagger</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#springboot%E9%9B%86%E6%88%90"><span class="nav-text">springboot集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEswagger"><span class="nav-text">配置swagger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Swagger%E9%85%8D%E7%BD%AE%E6%89%AB%E6%8F%8F%E6%8E%A5%E5%8F%A3"><span class="nav-text">Swagger配置扫描接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEAPI%E5%88%86%E7%BB%84"><span class="nav-text">配置API分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BD%93%E7%B1%BB%E9%85%8D%E7%BD%AE"><span class="nav-text">实体类配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E9%85%8D%E7%BD%AE"><span class="nav-text">接口文档配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1"><span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="nav-text">异步任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%AE%E4%BB%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">邮件任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">定时任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F-Dubbo-Zookeeper"><span class="nav-text">分布式 Dubbo Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-text">分布式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC"><span class="nav-text">RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dubbo"><span class="nav-text">Dubbo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper%EF%BC%9A%E7%AE%A1%E7%90%86Hadoop-Hive"><span class="nav-text">Zookeeper：管理Hadoop Hive..</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper%E5%AE%89%E8%A3%85"><span class="nav-text">Zookeeper安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dubbo-admin%E5%AE%89%E8%A3%85"><span class="nav-text">Dubbo-admin安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%90%88dubbo-zookeeper"><span class="nav-text">整合dubbo+zookeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">使用步骤</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E3%80%81swagger"><span class="nav-text">11、swagger</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1%E3%80%81%E6%A6%82%E8%BF%B0"><span class="nav-text">11.1、概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2%E3%80%81springboot%E9%9B%86%E6%88%90"><span class="nav-text">11.2、springboot集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3%E3%80%81%E9%85%8D%E7%BD%AEswagger"><span class="nav-text">11.3、配置swagger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-4%E3%80%81Swagger%E9%85%8D%E7%BD%AE%E6%89%AB%E6%8F%8F%E6%8E%A5%E5%8F%A3"><span class="nav-text">11.4、Swagger配置扫描接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-5%E3%80%81%E9%85%8D%E7%BD%AEAPI%E5%88%86%E7%BB%84"><span class="nav-text">11.5、配置API分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6%E3%80%81%E5%AE%9E%E4%BD%93%E7%B1%BB%E9%85%8D%E7%BD%AE"><span class="nav-text">11.6、实体类配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-7%E3%80%81%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E9%85%8D%E7%BD%AE"><span class="nav-text">11.7、接口文档配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-8%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-text">11.8、总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12%E3%80%81%E4%BB%BB%E5%8A%A1"><span class="nav-text">12、任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-1%E3%80%81%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="nav-text">12.1、异步任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-2%E3%80%81%E9%82%AE%E4%BB%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">12.2、邮件任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3%E3%80%81%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">12.3、定时任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F-Dubbo-Zookeeper"><span class="nav-text">13、分布式 Dubbo Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#13-1%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-text">13.1、分布式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-2%E3%80%81RPC"><span class="nav-text">13.2、RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-3%E3%80%81Dubbo"><span class="nav-text">13.3、Dubbo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-4%E3%80%81Zookeeper%EF%BC%9A%E7%AE%A1%E7%90%86Hadoop-Hive"><span class="nav-text">13.4、Zookeeper：管理Hadoop Hive..</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-5%E3%80%81Zookeeper%E5%AE%89%E8%A3%85"><span class="nav-text">13.5、Zookeeper安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-6%E3%80%81Dubbo-admin%E5%AE%89%E8%A3%85"><span class="nav-text">13.6、Dubbo-admin安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-7%E3%80%81%E6%95%B4%E5%90%88dubbo-zookeeper"><span class="nav-text">13.7、整合dubbo+zookeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-8%E3%80%81%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">13.8、使用步骤</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
