@@ -30,7 +30,7 @@
 <meta property="og:description" content="这是笔者在牛客网上刷剑指offer的题目的刷题笔记，持续更新!!!">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-28T13:45:29.616Z">
-<meta property="article:modified_time" content="2021-03-28T13:17:54.446Z">
+<meta property="article:modified_time" content="2021-03-29T02:10:51.418Z">
 <meta property="article:author" content="Ferron">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -191,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-28 21:45:29 / 修改时间：21:17:54" itemprop="dateCreated datePublished" datetime="2021-03-28T21:45:29+08:00">2021-03-28</time>
+              <time title="创建时间：2021-03-28 21:45:29" itemprop="dateCreated datePublished" datetime="2021-03-28T21:45:29+08:00">2021-03-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-29 10:10:51" itemprop="dateModified" datetime="2021-03-29T10:10:51+08:00">2021-03-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -230,6 +236,38 @@
 <p>因为这个一个排好序的二维数组，查找时考虑使用二分查找。然而由题目可知，这个二维数组的排序有一定规律，按照二分查找的思路就是选定一个mid点，然而进行查找。因此考虑选择二维数组右上方的元素作为mid，如果target等于mid，则找到；如果target大于mid，就说明target不在第一行，此时接着判断第二行和最后一列，循环即可；如歌targte小于mid，就说明target不在最后一列，此时接着判断第一行和倒数第二列，循环即可。</p>
 <p><strong>代码</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> target, <span class="keyword">int</span> [][] array)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> j = array[<span class="number">0</span>].length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">while</span>(i&lt;=array.length-<span class="number">1</span> &amp;&amp; j&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(target == array[i][j])&#123;</span><br><span class="line">                flag=<span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(target &gt; array[i][j])&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2、替换空格"><a href="#2、替换空格" class="headerlink" title="2、替换空格"></a>2、替换空格</h2><p><strong>题目描述</strong></p>
+<p>请实现一个函数，将一个字符串中的每个空格替换成“%20”。</p>
+<p><strong>示例</strong></p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;We Are Happy&quot;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;We%20Are%20Happy&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>思路分析</strong></p>
+<p>题目需要替换字符串，因此考虑使用StringBuffer类来实现。新建一个StringBuffer，遍历原字符串，如果字符为空格，则在sb中添加一个%20，如果字符不为空格，则添加该字符。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">replaceSpace</span> <span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line"></span><br><span class="line">    StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;s.length(); i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s.charAt(i)==<span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">            sb.append(<span class="string">&quot;%20&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            sb.append(s.charAt(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sb.toString();     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、从尾到头打印链表"><a href="#3、从尾到头打印链表" class="headerlink" title="3、从尾到头打印链表"></a>3、从尾到头打印链表</h2><p><strong>题目描述</strong></p>
+<p>输入一个链表，按链表从尾到头的顺序返回一个ArrayList。</p>
+<p><strong>示例</strong></p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;67,0,24,58&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[58,24,0,67]</span><br></pre></td></tr></table></figure>
+
+<p><strong>思路分析</strong></p>
+<p>题目说需要从尾到头打印这个链表，因此考虑使用栈来解决。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title">printListFromTailToHead</span><span class="params">(ListNode listNode)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        ArrayList array = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(ListNode node=listNode; node!=<span class="keyword">null</span>; node=node.next)&#123;</span><br><span class="line">            stack.push(node.val);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty())&#123;</span><br><span class="line">            array.add(stack.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 
 
 
@@ -363,7 +401,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-text">1、二维数组中的查找</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-text">1、二维数组中的查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%9B%BF%E6%8D%A2%E7%A9%BA%E6%A0%BC"><span class="nav-text">2、替换空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E4%BB%8E%E5%B0%BE%E5%88%B0%E5%A4%B4%E6%89%93%E5%8D%B0%E9%93%BE%E8%A1%A8"><span class="nav-text">3、从尾到头打印链表</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
