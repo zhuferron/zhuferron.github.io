@@ -9,8 +9,54 @@
     <atom:link href="http://zhuferron.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>何谈三观，褒贬任剪，笑骂随便</description>
-    <pubDate>Wed, 21 Apr 2021 08:21:34 GMT</pubDate>
+    <pubDate>Thu, 06 May 2021 08:25:35 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Java中==与equals的区别浅谈</title>
+      <link>http://zhuferron.github.io/2021/05/06/Java%E4%B8%AD==%E4%B8%8Eequals%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+      <guid>http://zhuferron.github.io/2021/05/06/Java%E4%B8%AD==%E4%B8%8Eequals%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+      <pubDate>Thu, 06 May 2021 08:24:18 GMT</pubDate>
+      
+      <description>本文从基本数据类型和引用数据类型的视角出发，浅谈了==与equals的区别</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="1、数据类型"><a href="#1、数据类型" class="headerlink" title="1、数据类型"></a>1、数据类型</h2><p>谈论<code>==</code>与<code>equal</code>的区别之前，我们先来回顾一下Java中的基本数据类型和引用数据类型。</p><p>基本数据类型：Java中包括八种基本数据类型，分别为char，byte，short，int，long，float，double，boolean。</p><p>引用数据类型：引用类型包括三种，分别为类(class)，接口(interface)，数组(array)，其中我们经常听到的Object，String，Date，Integer这些都属于类这种引用类型。</p><h2 id="2、区别"><a href="#2、区别" class="headerlink" title="2、区别"></a>2、区别</h2><ul><li>如果是用于基本数据类型的比较，则只能用<code>==</code>，而不能用<code>equals</code>，因为比较的数据类型是基本数据类型，它们没有equals()方法的实现，因此他们的比较只能用<code>==</code>来实现，<code>==</code>比较的是他们的值是否相等。</li><li>如果是用于引用数据类型的比较，不同情况下也有不同的结果。我们这里针对于类这种引用数据类型来说，所有的类都继承一个公共的父类<code>Object</code>，而该父类里面定义的比较方法为<code>equals</code>。但是，<code>Object</code>类里面的<code>equals</code>方法默认比较的结果是内存地址，而不是值，因此该方法返回的结果与<code>==</code>的结果相同。<strong>因此，这里判断<code>==</code>与<code>equals</code>的区别就变成了判断<code>equals</code>的具体实现是否用<code>==</code>来实现。</strong><ul><li>拿<code>String</code>，<code>Integer</code>，<code>Date</code>这些类来说，这些类在继承了<code>Object</code>之后，重写了父类的<code>equals</code>方法，因此这些引用数据类型使用<code>==</code>比较时，比较的是对象的内存地址，而使用<code>equals</code>方法比较时，则比较的是对象的值。</li><li>对于<code>StringBuffer</code>或者一些自定义的类，这些类没有重写覆盖父类<code>Object</code>的<code>equals</code>方法，因此这些对象使用<code>==</code>与<code>equals</code>返回的结果是一样，因为<code>equals</code>的实现方式就是使用<code>==</code>来实现的。</li><li>还有一个关于<code>字符串缓冲池</code>的概念，程序会在运行的时候创建一个字符串缓冲池，来存放一些创建的字符串。如果你同时定义了两个相同的字符串，并且没有进行new操作，则在定义第二个字符串的时候，会将第二个字符串的内存地址指向第一个相同的字符串，而不会再创建一个新对象。此时<code>==</code>与<code>equals</code>操作返回结果相同；而当第二个字符串进行了new操作，创建第二个字符串时会新建一个字符串，此时<code>==</code>与<code>equals</code>返回的结果不相同。</li></ul></li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      
+      
+      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
+      
+      
+      <comments>http://zhuferron.github.io/2021/05/06/Java%E4%B8%AD==%E4%B8%8Eequals%E7%9A%84%E5%8C%BA%E5%88%AB/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>接口与抽象类的区别(包括JDK8新特征)</title>
+      <link>http://zhuferron.github.io/2021/05/06/%E6%8E%A5%E5%8F%A3%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB(%E5%8C%85%E6%8B%ACJDK8%E6%96%B0%E7%89%B9%E6%80%A7)/</link>
+      <guid>http://zhuferron.github.io/2021/05/06/%E6%8E%A5%E5%8F%A3%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB(%E5%8C%85%E6%8B%ACJDK8%E6%96%B0%E7%89%B9%E6%80%A7)/</guid>
+      <pubDate>Thu, 06 May 2021 07:11:03 GMT</pubDate>
+      
+      <description>本文深入地分析了接口和抽象类的区别，也包括了JDK8前后的对比。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h2><p>抽象类：Java的核心就是面向对象，在面向对象的程序设计中，万物皆对象，所有的对象都应该用类来描述，但是并不是所有的类都是用来描述对象的。因为很多时候大部分对象都不能直接被描述，当一个类难于有足够的信息来描述一个具体的对象时，我们通常把它定义为抽象类，用关键字<code>abstract</code>来修饰。因此，凡是用关键字<code>abstract</code>修饰的类都是抽象类，凡是用关键字<code>abstract</code>修饰的方法都是抽象方法，抽象类不一定要拥有抽象方法，抽象方法一定在抽象类里面。</p><p>接口：广义上来说，接口算是一个只包含抽象方法的抽象类，但是严格上并不能这样说，因为接口不是直接说是抽象类，抽象类是包含属性和方法，而接口则是包含了类要实现的方法。接口在Java中算是一种抽象类型，是许多抽象方法的集合。接口需要用关键字<code>interface</code>来修饰。</p><h2 id="2、区别"><a href="#2、区别" class="headerlink" title="2、区别"></a>2、区别</h2><ol><li>抽象类可以有构造方法和普通成员变量，接口没有构造方法和普通成员变量，只能有<code>static final</code>关键字修饰的静态常量</li><li>抽象类可以有非抽象的普通方法，而对于接口来说，JDK8之前，接口只能有一系列的抽象方法；<strong>而在JDK8之后，接口不仅仅可以包含抽象方法，还可以包含默认方法和静态方法。</strong></li><li>一个类可以实现多个接口，但只能继承一个抽象类</li><li>抽象类中方法可以被所有关键字修饰，但是抽象方法只可以被<code>public</code>，<code>protected</code>，<code>default</code>关键字来修饰，不能用<code>private</code>修饰。JDK8之前，抽象类的方法默认访问权限为<code>protected</code>，JDK8以后，抽象类的方法默认访问权限变为<code>default</code>。而对于接口来说，JDK8之前，所有的抽象方法访问权限必须是<code>public</code>，JDK8时，抽象方法访问权限可以为<code>public</code>和<code>default</code>，JDK9及之后，抽象方法访问权限也可以是<code>private</code>。</li></ol><h2 id="3、其他"><a href="#3、其他" class="headerlink" title="3、其他"></a>3、其他</h2><ul><li><p>接口和抽象类的区别，本质上就是类和一系列抽象方法的集合的区别，抽象类可以有构造方法，普通方法，也可以有普通成员变量，而接口只能有静态常量和抽象方法(默认方法和静态方法)。</p></li><li><p>实际开发中，接口更像是一种开发规范，由架构师设计好了接口之后，再由项目开发团队分别把这些接口逐一去实现；而抽象类更多的是在具体代码实现方面发挥作用。</p></li><li><p>JDK8之后接口之所以要添加默认方法的原因，是因为当接口的实现类要实现接口时，需要重写接口里面的全部方法，这使接口与实现类的耦合度过高。因此如果需要给接口添加一个新的方法时，所有的实现类都需要修改，而默认方法可以实现为接口添加新的方法，并且不改变原有对接口的实现。</p></li><li><p>抽象类中的抽象方法不能用<code>private</code>修饰，因为抽象类中的抽象方法就是为了被子类重写而存在的，所以不能用<code>private</code>修饰。</p></li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      
+      
+      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
+      
+      
+      <comments>http://zhuferron.github.io/2021/05/06/%E6%8E%A5%E5%8F%A3%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB(%E5%8C%85%E6%8B%ACJDK8%E6%96%B0%E7%89%B9%E6%80%A7)/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>面向对象详解(对比面向过程)</title>
@@ -193,52 +239,6 @@
       
       
       <comments>http://zhuferron.github.io/2021/03/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)%EF%BC%9A%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95(%E4%B8%80)/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>微服务架构及Pig项目分析(二)：SpringCloud微服务技术</title>
-      <link>http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%BA%8C)%20/</link>
-      <guid>http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%BA%8C)%20/</guid>
-      <pubDate>Wed, 17 Mar 2021 00:45:39 GMT</pubDate>
-      
-      <description>软件体系架构课程论文，这部分主要介绍了微服务存在的问题以及SpringCloud是怎么解决这些问题的</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="2-1、微服务核心问题"><a href="#2-1、微服务核心问题" class="headerlink" title="2.1、微服务核心问题"></a>2.1、微服务核心问题</h2><ol><li><p>微服务架构中有很多服务组件，不同的用户怎么调用不同的服务</p></li><li><p>微服务架构中不同的服务之间怎么进行互相调用</p></li><li><p>微服务架构中怎么对这些不同的服务进行治理</p></li><li><p>微服务架构中某个服务出问题了，怎么解决</p></li></ol><h2 id="2-2、问题一：Zuul-微服务网关"><a href="#2-2、问题一：Zuul-微服务网关" class="headerlink" title="2.2、问题一：Zuul+微服务网关"></a>2.2、问题一：Zuul+微服务网关</h2><p>​    Zuul是Netflix开源的一个API Gateway 服务器,在云平台上提供动态路由，监控，弹性，安全等边缘服务的框架。Zuul相当于是设备和Netflix流应用的Web网站后端所有请求的前门。SpringCloud中集成了Zuul，使用它来解决微服务架构中的问题一。</p><p>​    Zuul的核心便是Servlet中的filter机制的实现，而filter本质上就是一个Servlet，而filter的应用则是Spring中AOP思想的体现，通过在用户在前端与后端通信的过程中增加一个filter，实现动态路由的功能。例如，用户在前端与后端进行交互时，需要一个具体的服务，而后端往往有成百上千个服务，想让前端记住后端服务的名称往往是不现实的，而加入Zuul网关的作用就是，当前端想要调用后端的一个或多个服务时，往往不直接调用，而是统一从Zuul网关调用，Zuul网关将对应的请求转发或重定向到对应的服务。</p><p><img src="http://fl.ljuuu.com/img/20210317083241.png"></p><h2 id="2-3、问题二：Feign-异步调用"><a href="#2-3、问题二：Feign-异步调用" class="headerlink" title="2.3、问题二：Feign+异步调用"></a>2.3、问题二：Feign+异步调用</h2><p>​    Feign是Netflix开发的声明式，模板化的HTTP客户端，其灵感来自Retrofit,JAXRS-2.0以及WebSocket. Feign远程调用的核心就是通过一系列的封装和处理，将以Java注解的方式定义的远程调用API接口，最终转换成HTTP的请求形式，然后将HTTP的请求的响应结果，解码成JavaBean，放回给调用者，其调用过程如下图所示。</p><p><img src="http://fl.ljuuu.com/img/20210317083309.png"></p><p>​    Feign的核心机制就是动态代理，与静态代理不同的是，动态代理的代码不用我们手写，而是可以自动生成。Feign中的动态代理是基于接口的动态代理模式，它是由JDK动态代理的，接口为InvocationHandler，动态代理也是AOP思想的核心。Feign的动态代理会根据你在接口上的@RequestMapping等注解，来动态构造出你要请求的服务的地址最后针对这个地址，发起请求、解析响应。</p><h2 id="2-4、问题三：Eureka-服务注册与发现"><a href="#2-4、问题三：Eureka-服务注册与发现" class="headerlink" title="2.4、问题三：Eureka+服务注册与发现"></a>2.4、问题三：Eureka+服务注册与发现</h2><p>​    Eureka是Netflix开发的服务发现框架，本身是一个基于REST的服务，主要用于定位运行在AWS域中的中间层服务，以达到负载均衡和中间层服务故障转移的目的。SpringCloud将它集成在其子项目spring-cloud-netflix中，以实现SpringCloud的服务发现功能。Eureka中分为eureka server和eureka client。其中eureka server是作为服务的注册与发现中心。eureka client既可以作为服务的生产者，又可以作为服务的消费者。</p><p><img src="http://fl.ljuuu.com/img/20210317083340.png"></p><p>​    其整体架构如上图所示：多个eureka server同步保留着相同的服务信息，作为服务生产者的eureka client需要在eureka server中注册其服务信息，而作为服务消费者的eureka client想要查找一个具体的服务时，首先得去eureka server查找对应服务所对应的eureka client，然后再从对应的eureka client调用对应的服务。</p><h2 id="2-5、问题四：Hystrix-降级"><a href="#2-5、问题四：Hystrix-降级" class="headerlink" title="2.5、问题四：Hystrix+降级"></a>2.5、问题四：Hystrix+降级</h2><p>​    微服务架构的特点就是各个不同的服务分离了，当网站或应用程序有很高的工作量时，就有可能导致部分服务挂了，然而往往不同的服务之间有相互调用，当一个服务挂了，就可能导致其他服务的部分功能也实现不了，这就是服务雪崩效应。</p><p>​    为了避免这种服务雪崩效应，Hystrix提出的一个解决方法就是服务降级。其实现的具体思想就是每个服务发起的请求都通过Hystrix的线程池不同的服务走不同的线程池，实现了不同的服务调度隔离，从而避免服务雪崩的问题。</p>]]></content:encoded>
-      
-      
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
-      
-      
-      <category domain="http://zhuferron.github.io/tags/SpringCloud/">SpringCloud</category>
-      
-      
-      <comments>http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%BA%8C)%20/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>微服务架构及Pig项目分析(三)：Pig项目分析</title>
-      <link>http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%B8%89)/</link>
-      <guid>http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%B8%89)/</guid>
-      <pubDate>Wed, 17 Mar 2021 00:39:54 GMT</pubDate>
-      
-      <description>软件体系架构课程论文，这部分主要对Pig项目分析和源码解读</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="3-1、项目简介"><a href="#3-1、项目简介" class="headerlink" title="3.1、项目简介"></a>3.1、项目简介</h2><p>  本文微服务案例选择的是码云上19.2K star的pig项目，该项目是基于 Spring Cloud Hoxton、Spring Boot 2.4、OAuth2的RBAC权限管理系统。</p><h2 id="3-2、项目技术"><a href="#3-2、项目技术" class="headerlink" title="3.2、项目技术"></a>3.2、项目技术</h2><h3 id="3-2-1、Nacos-服务注册与发现"><a href="#3-2-1、Nacos-服务注册与发现" class="headerlink" title="3.2.1、Nacos 服务注册与发现"></a>3.2.1、Nacos 服务注册与发现</h3><p>​    该项目通过Nacos注册中心来作为协调所有服务，所有服务需要在注册中心进行注册，而一个服务需要调用另外一个服务的时候则先取注册中心查找，然后得到查找结果后再去调用对应的服务。具体过程如下图所示：所有的订单服务都在注册中心中注册，但某一个用户服务需要订单服务时，则去注册中心查找需要的订单服务名字，然后去调用对应的服务。</p><p><img src="http://fl.ljuuu.com/img/20210317083536.png"></p><h3 id="3-2-2、Ribbon负载均衡"><a href="#3-2-2、Ribbon负载均衡" class="headerlink" title="3.2.2、Ribbon负载均衡"></a>3.2.2、Ribbon负载均衡</h3><p>​    Ribbon是Netflix发布的云中间层服务开源项目，其主要功能是提供客户端实现负载均衡算法。负载均衡的调度规则一般为轮询调度或者加权轮询策略，轮询调度算法的原理是每一次把来自用户的请求轮流分配给内部中的服务器，从1开始，直到N(内部服务器个数)，然后重新开始循环。轮询调度算法假设所有服务器的处理性能都相同，不关心每台服务器的当前连接数和响应速度。当请求服务间隔时间变化比较大时，轮询调度算法容易导致服务器间的负载不平衡。所以此种均衡算法适合于服务器组中的所有服务器都有相同的软硬件配置并且平均服务请求相对均衡的情况，因此现实中往往会采用加权轮询策略，而限于本文的篇幅，加权轮询策略原理不再展开。</p><p><img src="http://fl.ljuuu.com/img/20210317083557.png"></p><p>​    在SpringCloud中往往使用Ribbon来实现负载均值，其过程如下图所示：当有一个服务需要调用另外某一个服务时，该服务会向注册中心进行查询，注册中心会返回一个可用的服务实例列表，例如前文的三个订单服务中只有一个订单服务空闲，另外两个订单服务处于高工作量时，用户服务就能得到空闲的订单服务的名称，此时用户服务就可直接调用该空闲的订单服务。</p><p><img src="http://fl.ljuuu.com/img/20210317083609.png"></p><h3 id="3-2-3、GateWay业务网关"><a href="#3-2-3、GateWay业务网关" class="headerlink" title="3.2.3、GateWay业务网关"></a>3.2.3、GateWay业务网关</h3><p>​    面对互联网复杂的业务系统，基本可以将API网关分成两类：流量网关和业务网关。流量网关是指跟具体的后端业务系统和服务完全无关的部分，比如安全策略、全局性流控策略、流量分发策略等。而业务网关针对具体的后端业务系统，或者是服务和业务有一定关联性的部分，并且一般被直接部署在业务服务的前面。业务网关一般部署在流量网关之后，业务系统之前，比流量网关更靠近系统。我们大部分情况下说的 API 网关，狭义上指的是业务网关。并且如果系统的规模不大，我们也会将两者合二为一，使用一个网关来处理所有的工作。</p><p>​    SpringCloud中GateWay作为业务网关的一种，整个作用原理如下图：客户端发送的请求不会直接到服务端，而是首先通过网关系统，如果请求与网关程序定义的路由匹配，则将其发送到网关 Web 处理程序，此处理程序运行特定的请求过滤器链。过滤器之间用虚线分开的原因是过滤器可能会在发送代理请求之前或之后执行逻辑。所有 “pre” 过滤器逻辑先执行，然后执行代理请求，代理请求完成后，执行 “post” 过滤器逻辑。</p><p><img src="http://fl.ljuuu.com/img/20210317083629.png"></p><h3 id="3-2-4、Sentinel-流量保护"><a href="#3-2-4、Sentinel-流量保护" class="headerlink" title="3.2.4、Sentinel 流量保护"></a>3.2.4、Sentinel 流量保护</h3><p>​    Hystrix的产生和原理在前文已经讲述，Sentinel 和 Hystrix 的原则是一致的：当调用链路中某个资源出现不稳定，例如，表现为 timeout，异常比例升高的时候，则对这个资源的调用进行限制，并让请求快速失败，避免影响到其它的资源，最终产生雪崩的效果。但是在限制的手段上，Sentinel 和 Hystrix 采取了完全不一样的方法。Sentinel 对这个问题采取了两种手段：</p><ol><li><p>通过并发线程数进行限制：和资源池隔离的方法不同，Sentinel 通过限制资源并发线程的数量，来减少不稳定资源对其它资源的影响。这样不但没有线程切换的损耗，也不需要您预先分配线程池的大小。当某个资源出现不稳定的情况下，例如响应时间变长，对资源的直接影响就是会造成线程数的逐步堆积。当线程数在特定资源上堆积到一定的数量之后，对该资源的新请求就会被拒绝。堆积的线程完成任务后才开始继续接收请求。</p></li><li><p>通过响应时间对资源进行降级：除了对并发线程数进行控制以外，Sentinel 还可以通过响应时间来快速降级不稳定的资源。当依赖的资源出现响应时间过长后，所有对该资源的访问都会被直接拒绝，直到过了指定的时间窗口之后才重新恢复。</p></li></ol><h2 id="3-3、源码分析"><a href="#3-3、源码分析" class="headerlink" title="3.3、源码分析"></a>3.3、源码分析</h2><h3 id="3-3-1、注册中心源码分析"><a href="#3-3-1、注册中心源码分析" class="headerlink" title="3.3.1、注册中心源码分析"></a>3.3.1、注册中心源码分析</h3><p>​    从码云将pig项目clone到本地之后，使用IDEA打开该项目，SpringBoot项目本质还是一个Maven项目，故将该项目解析成一个Maven项目。</p><p>​    Springcloud-commons包中自动装配了AutoServiceRegistrationAutoConfiguration类，这个类就是与服务注册相关的配置类。如下图所示，找到这个配置类，这个配置类注入了一个AutoServiceRegistration实例。</p><p><img src="http://fl.ljuuu.com/img/20210317083729.png"></p><p>​    分析与AutoServiceRegistration类相关的其他类，发现有个很重要的AbstractAutoServiceRegistration抽象类实现了AutoServiceRegistration这个接口。</p><p><img src="http://fl.ljuuu.com/img/20210317083742.png"></p><p>​    AbstractAutoServiceRegistration类实现了onApplicationEvent抽象方法,并且监听WebServerInitializedEvent事件(当Webserver初始化完成之后) , 调用this.bind ( event )方法。</p><p><img src="http://fl.ljuuu.com/img/20210317083755.png"></p><p>​    最终会调用NacosServiceREgistry.register()方法进行服务注册。</p><p><img src="http://fl.ljuuu.com/img/20210317083808.png"></p><p><img src="http://fl.ljuuu.com/img/20210317083812.png"></p><h3 id="3-3-2、GateWay路由网关源码分析"><a href="#3-3-2、GateWay路由网关源码分析" class="headerlink" title="3.3.2、GateWay路由网关源码分析"></a>3.3.2、GateWay路由网关源码分析</h3><p>​    因为目前SpringCloud未集成Zuul，并且Zuul也已经停止维护，而GateWay与Spring完美集成，因此Pig项目选择用GateWay来做API网关。</p><p>​    GateWay中定义了一个GlobalFilter接口，该接口直译为全局的过滤器，我们知道API网关的本质就是一个或者多个过滤器，因此我们找到该项目中GlobalFilter接口的实现类。</p><p><img src="http://fl.ljuuu.com/img/20210317083832.png"></p><p>​    该类重写了接口中的filter()方法，接收一个ServerWebExchange参数和GatewayFilterChain参数，GatewayFilterChain是一个放行链，其接收参数为一系列过滤器的列表，表示可以对这些过滤器进行建立或者放行。我们重点关注ServerWebExchange参数。</p><p><img src="http://fl.ljuuu.com/img/20210317083843.png"></p><p>​    如上图，ServerWebExchange参数有请求和相应两个数据域，表示从ServerWebExchange参数中我们可以得到从用户那传递过来的请求的具体信息。于是有了下面这一步，从ServerWebExchange中得到请求的信息。</p><p><img src="http://fl.ljuuu.com/img/20210317083854.png"></p><p>然后根据具体的内容，GateWay重写对应的请求路径，将请求实现转发或者重定向。</p><p><img src="http://fl.ljuuu.com/img/20210317083903.png"></p><p>实际上，这里GateWay整个可以看成进入应用程序之前的过滤器，拦截所有请求，然后根据请求内容将请求转发或重定向到具体的业务实现部分，GateWay充当一个中介的作用。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol><li><p><a href="https://www.cnblogs.com/zhangs1986/p/10546973.html">https://www.cnblogs.com/zhangs1986/p/10546973.html</a></p></li><li><p><a href="https://blog.csdn.net/weixin_41217541/article/details/104718834">https://blog.csdn.net/weixin_41217541/article/details/104718834</a></p></li><li><p><a href="https://pig4cloud.com/home">https://pig4cloud.com/home</a></p></li></ol>]]></content:encoded>
-      
-      
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
-      
-      
-      <category domain="http://zhuferron.github.io/tags/SpringCloud/">SpringCloud</category>
-      
-      
-      <comments>http://zhuferron.github.io/2021/03/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8APig%E9%A1%B9%E7%9B%AE%E5%88%86%E6%9E%90(%E4%B8%89)/#disqus_thread</comments>
       
     </item>
     
