@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/zhuferron.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/zhuferron.github.io/images/dragon_32px_504526_easyicon.net.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/zhuferron.github.io/images/dragon_16px_504526_easyicon.net.png">
+  <link rel="mask-icon" href="/zhuferron.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/zhuferron.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/zhuferron.github.io/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/zhuferron.github.io/lib/pace/pace-theme-minimal.min.css">
+  <script src="/zhuferron.github.io/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhuferron.github.io","root":"/zhuferron.github.io/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文描述了JVM的组成部分，以及JVM中类加载器加载class文件的原理机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM加载class文件的原理机制">
+<meta property="og:url" content="http://zhuferron.github.io/2021/05/07/JVM%E5%8A%A0%E8%BD%BDclass%E6%96%87%E4%BB%B6%E7%9A%84%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Ferron的个人博客">
+<meta property="og:description" content="本文描述了JVM的组成部分，以及JVM中类加载器加载class文件的原理机制">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fl.ljuuu.com/img/690102-20160726145530263-378108880.png">
+<meta property="article:published_time" content="2021-05-07T11:00:34.660Z">
+<meta property="article:modified_time" content="2021-05-07T11:00:26.494Z">
+<meta property="article:author" content="Ferron">
+<meta property="article:tag" content="Java基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fl.ljuuu.com/img/690102-20160726145530263-378108880.png">
+
+<link rel="canonical" href="http://zhuferron.github.io/2021/05/07/JVM%E5%8A%A0%E8%BD%BDclass%E6%96%87%E4%BB%B6%E7%9A%84%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM加载class文件的原理机制 | Ferron的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/zhuferron.github.io/rss2.xml" title="Ferron的个人博客" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/zhuferron.github.io/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ferron的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/zhuferron.github.io/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/zhuferron.github.io/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/zhuferron.github.io/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/zhuferron.github.io/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/zhuferron.github.io/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhuferron.github.io/2021/05/07/JVM%E5%8A%A0%E8%BD%BDclass%E6%96%87%E4%BB%B6%E7%9A%84%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/zhuferron.github.io/images/avatar.gif">
+      <meta itemprop="name" content="Ferron">
+      <meta itemprop="description" content="何谈三观，褒贬任剪，笑骂随便">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ferron的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM加载class文件的原理机制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-05-07 19:00:34 / 修改时间：19:00:26" itemprop="dateCreated datePublished" datetime="2021-05-07T19:00:34+08:00">2021-05-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">Java后端</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">本文描述了JVM的组成部分，以及JVM中类加载器加载class文件的原理机制</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1、JVM"><a href="#1、JVM" class="headerlink" title="1、JVM"></a>1、JVM</h2><p>JVM 全称是Java Virtual Machine ，翻译过来就是Java 虚拟机，下图是JVM的组成部分。</p>
+<p><img src="http://fl.ljuuu.com/img/690102-20160726145530263-378108880.png"></p>
+<ul>
+<li>Class Loader(类加载器)：<strong>类加载器本身也是一个类</strong>。当Java源代码(.java)经过javac的编译之后变成了字节码(.class)，字节码会进入JVM的类加载器。但是，并不是所有的字节码文件进入类加载器之后都会被加载，而是必须符合class文件的格式要求才会被加载。但是加载之后能不能运行就不是类加载器的负责部分了。</li>
+<li>Runtime Data Area(运行数据区)：<ul>
+<li>PC Register(程序计数器)：这部分是一块较小的内存空间，它可以被看成当前线程所执行的字节码的行号指示器。简单来说，就是为了保证程序的正确运行。当存在多线程时，CPU将线程A挂起并且去执行线程B，然后又回来执行线程A，此时CPU怎么知道之前该线程执行到哪里呢？因此，我们需要给每个线程都分配一个程序计数器，来记录该线程执行到的字节码行数，因此，<strong>每个程序计数器都是线程私有的。</strong></li>
+<li>Stack(Java虚拟机栈)：<strong>Java虚拟机栈是线程私有的，生命周期与线程相同。</strong>它的存在是为了存储字节码文件解释时Java方法产生的内存模型。每个方法被执行时都会产生一个<strong>栈帧</strong>，存储局部变量表、操作栈、动态链接、方法出口。每个方法被调用到执行完成的过程，就相当于该栈帧在Java虚拟机栈从入栈到出栈的一次过程。</li>
+<li>Heap(Java虚拟机堆)：Java虚拟机堆是虚拟机内存中最大的一部分，它在JVM启动时创建，被<strong>所有线程所共享</strong>。它负责存放对象实例，而<strong>Java的GC机制主要管理的也就是Java虚拟机堆</strong>。Java虚拟机堆在物理上可以不连续，逻辑上连续即可。</li>
+<li>Method Area(方法区)：<strong>方法区域Java虚拟机堆一样，是线程共享的，并且也是可以在物理上不连续，逻辑上连续即可。</strong>这个区域存储一些已经被JVM加载的类信息、常量、静态变量等。方法区包括Runtime Constant Pool(运行时常量池)，它是用于保存 Class 文件中的符号引用、翻译出来的直接引用。</li>
+<li>Native Method Stack(本地方法栈)：<strong>本地方法栈也是线程私有的。</strong>与Java虚拟机栈类似，只不过Java虚拟机栈中的方法是字节码文件解释时产生的Java方法，而本地方法栈中的方法是本地方法。</li>
+</ul>
+</li>
+<li>Execution Engine(执行引擎)：我们知道Java的跨平台性是因为JVM的存在，JVM中执行引擎的作用就相当于解释器，将字节码文件解释成机器码。</li>
+<li>Native Interface(本地库接口)：当执行引擎在解释时，需要加载一些基本类库，本地库接口的作用就是提供基本类库的接口给其引用。</li>
+</ul>
+<h2 id="2、JVM加载class文件的原理机制"><a href="#2、JVM加载class文件的原理机制" class="headerlink" title="2、JVM加载class文件的原理机制"></a>2、JVM加载class文件的原理机制</h2><p>了解了JVM的组合和体系，我们就很容易理解JVM加载class文件的原理机制</p>
+<p>类加载器加载过程：</p>
+<ul>
+<li>装载和导入字节码文件</li>
+<li>链接：<ul>
+<li>检查：检查字节码文件的格式</li>
+<li>准备：为类的静态变量分配内存</li>
+<li>解析：将符号引用转化成直接引用</li>
+</ul>
+</li>
+<li>初始化：初始化静态变量，静态代码块</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+     
+       <div>
+         <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+       </div>
+     
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag"># Java基础</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/zhuferron.github.io/2021/05/07/Java%E4%B8%AD%E7%9A%84JDK%EF%BC%8CJRE%EF%BC%8CJVM%E5%8C%BA%E5%88%AB/" rel="prev" title="Java中的JDK，JRE，JVM区别">
+      <i class="fa fa-chevron-left"></i> Java中的JDK，JRE，JVM区别
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/zhuferron.github.io/2021/05/08/Java%E4%B8%AD%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%92%8C%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="Java中成员变量和局部变量的区别">
+      Java中成员变量和局部变量的区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81JVM"><span class="nav-text">1、JVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81JVM%E5%8A%A0%E8%BD%BDclass%E6%96%87%E4%BB%B6%E7%9A%84%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6"><span class="nav-text">2、JVM加载class文件的原理机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ferron"
+      src="/zhuferron.github.io/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Ferron</p>
+  <div class="site-description" itemprop="description">何谈三观，褒贬任剪，笑骂随便</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/zhuferron.github.io/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/zhuferron.github.io/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/zhuferron.github.io/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-3-11 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ferron</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/zhuferron.github.io/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/zhuferron.github.io/lib/anime.min.js"></script>
+  <script src="/zhuferron.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/zhuferron.github.io/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/zhuferron.github.io/js/utils.js"></script>
+
+<script src="/zhuferron.github.io/js/motion.js"></script>
+
+
+<script src="/zhuferron.github.io/js/schemes/pisces.js"></script>
+
+
+<script src="/zhuferron.github.io/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/zhuferron.github.io/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/zhuferron.github.io/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":210,"height":306},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
