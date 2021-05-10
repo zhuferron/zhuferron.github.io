@@ -9,8 +9,77 @@
     <atom:link href="http://zhuferron.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>何谈三观，褒贬任剪，笑骂随便</description>
-    <pubDate>Sat, 08 May 2021 07:52:53 GMT</pubDate>
+    <pubDate>Mon, 10 May 2021 03:17:09 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Java中final、finally和finalize的区别</title>
+      <link>http://zhuferron.github.io/2021/05/10/Java%E4%B8%ADfinal%E3%80%81finally%E5%92%8Cfinalize%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
+      <guid>http://zhuferron.github.io/2021/05/10/Java%E4%B8%ADfinal%E3%80%81finally%E5%92%8Cfinalize%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
+      <pubDate>Mon, 10 May 2021 03:17:22 GMT</pubDate>
+      
+      <description>解释了Java中final、finally和finalize的区别</description>
+      
+      
+      
+      <content:encoded><![CDATA[<ul><li><code>final</code>：Java中的一个关键字，用来修饰类则代表该为一个final类，不能被继承；用来修饰方法时，则表示该方法只能被使用，而不能被重载或重写；用来修饰变量时，该变量定义时必须初始化，变量不能被改变。</li><li><code>finally</code>：异常处理时的代码，<code>try</code> 模块会抛出异常，而<code>catch</code>模块会捕获异常并处理，而<code>finally</code>模块则一般放在异常处理模块的最后，无论怎么样都会执行里面的代码，一般用来清理资源(不会被GC机制自动回收的资源)。</li><li><code>finalize</code>：是<code>Object</code>公共父类中的一个方法。这个方法一般会在该对象被GC机制自动回收的最后被调用，且只会被调用一次，运行完该方法该对象就不再存在，一般在该方法中定义一些该对象被回收前最后需要完成的事情。但是该方法运行结果不确定性极高，因为可能该方法运行周期十分长。</li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
+      
+      
+      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
+      
+      
+      <comments>http://zhuferron.github.io/2021/05/10/Java%E4%B8%ADfinal%E3%80%81finally%E5%92%8Cfinalize%E7%9A%84%E5%8C%BA%E5%88%AB/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>Java中ArrayList和LinkedList详解</title>
+      <link>http://zhuferron.github.io/2021/05/10/Java%E4%B8%ADArrayList%E5%92%8CLinkedList%E8%AF%A6%E8%A7%A3/</link>
+      <guid>http://zhuferron.github.io/2021/05/10/Java%E4%B8%ADArrayList%E5%92%8CLinkedList%E8%AF%A6%E8%A7%A3/</guid>
+      <pubDate>Mon, 10 May 2021 02:44:35 GMT</pubDate>
+      
+      <description>详解Java中ArrayList和LinkedList，以及对比两者区别</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="1、ArrayList详解"><a href="#1、ArrayList详解" class="headerlink" title="1、ArrayList详解"></a>1、ArrayList详解</h2><h3 id="1-1、简介"><a href="#1-1、简介" class="headerlink" title="1.1、简介"></a>1.1、简介</h3><p>​    ArrayList是通过动态数组实现的，底层基于动态数组实现容量的动态改变。继承自 AbstractList，实现了 List 接口。</p><p><img src="http://fl.ljuuu.com/img/v2-1cd5e4c4fecb60d30382944a4c2eecb3_720w.jpg"></p><h3 id="1-2、详解"><a href="#1-2、详解" class="headerlink" title="1.2、详解"></a>1.2、详解</h3><ul><li>扩容：ArrayList默认构造方法初始化的数组长度为10，,每次扩容后的容量为原来数组的1.5倍。扩容通过数组拷贝来实现，效率较低。</li><li><code>get()</code>方法：首先检查索引是否越界，然后返回对应索引的值。</li><li><code>set()</code>方法，首先检查索引是否越界，然后设置对应索引的值。</li><li><code>remove()</code>方法：首先判断索引是否越界，然后通过移动覆盖的思想，拷贝要删除元素后面的所有元素，向前覆盖，然后将最后多出来的元素设为null，GC机制自动回收。</li><li><code>add()</code>方法，思想与<code>remove()</code>方法类似，通过向后覆盖的思想，先拷贝要添加索引后的元素，然后添加元素。</li></ul><h2 id="2、LinkedList详解"><a href="#2、LinkedList详解" class="headerlink" title="2、LinkedList详解"></a>2、LinkedList详解</h2><h3 id="2-1、简介"><a href="#2-1、简介" class="headerlink" title="2.1、简介"></a>2.1、简介</h3><p>​    LinkedList的底层是通过双向链表实现的。</p><p><img src="http://fl.ljuuu.com/img/272345393446232.jpg"></p><h3 id="2-2、详解"><a href="#2-2、详解" class="headerlink" title="2.2、详解"></a>2.2、详解</h3><ul><li><code>add()</code>方法：添加一个元素</li><li><code>set()</code>方法：修改某个结点的值</li><li><code>get()</code>方法：获取某个结点的值</li><li><code>remove()</code>：删除一个结点</li><li>虚拟头结点：我们在使用时经常会使用虚拟头结点这个操作，即将原本的head的上一个结点设为一个空的结点，这样就会在例如<code>add()</code>方法中减少一次<code>index==0</code>的判断。</li></ul><h2 id="3、区别"><a href="#3、区别" class="headerlink" title="3、区别"></a>3、区别</h2><ul><li>底层实现不同：ArrayList是基于动态数组实现的；LinkedList是基于双向链表实现的。</li><li>方法效率不同：ArrayList的<code>get()</code>和<code>set()</code>方法效率高；LinkedList的<code>remove()</code>和<code>add()</code>方法效率高。</li><li>扩容机制不同：ArrayList扩容需要新建一个数组，效率低；LinkedList没有容量限制。</li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">Java面试之数据结构与算法</category>
+      
+      
+      <category domain="http://zhuferron.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</category>
+      
+      
+      <comments>http://zhuferron.github.io/2021/05/10/Java%E4%B8%ADArrayList%E5%92%8CLinkedList%E8%AF%A6%E8%A7%A3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>详解HashMap、HashTable、HashSet</title>
+      <link>http://zhuferron.github.io/2021/05/09/%E8%AF%A6%E8%A7%A3HashMap%E3%80%81HashTable%E3%80%81HashSet/</link>
+      <guid>http://zhuferron.github.io/2021/05/09/%E8%AF%A6%E8%A7%A3HashMap%E3%80%81HashTable%E3%80%81HashSet/</guid>
+      <pubDate>Sun, 09 May 2021 09:54:16 GMT</pubDate>
+      
+      <description>对HashMap和HashSet进行了详解，同时比较了HashMap和HashTable的区别。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="1、HashMap详解"><a href="#1、HashMap详解" class="headerlink" title="1、HashMap详解"></a>1、HashMap详解</h2><h3 id="1-1、简介"><a href="#1-1、简介" class="headerlink" title="1.1、简介"></a>1.1、简介</h3><ul><li>HashMap是基于哈希表的Map实现。</li><li>哈希表是一种数据结构，HashMap是基于哈希表实现的，哈希表由数组＋链表组成(<strong>JDK8引入了红黑树</strong>)。</li><li>哈系表的主干是数组，其存储的值是Node&lt;K,V&gt;结点，值在数组中的存储位置由键取哈希之后得到，因为HashMap是通过键来查找值，而查找值只需要将键计算一次哈希值便可以找到值的存储位置，因此其查找效率为O(1)。</li><li>然而通过哈希函数计算的哈希值并不是不相等的，有可能输入不同的键而计算出相同的哈希值，这就是哈希冲突。HashMap解决哈希冲突的方法就是引入链表，每个数组存储的元素为一个单链表，当发生哈希冲突的时候便把将这些冲突的元素存储为一条链表，JDK8之前单链表不会转化成红黑树，这导致一旦单链表长了之后，查找效率就会变低；JDK8之后引入红黑树，当单链表长度超过某个阈值之后转化成红黑树，使查找效率变高。</li></ul><h3 id="1-2、关系"><a href="#1-2、关系" class="headerlink" title="1.2、关系"></a>1.2、关系</h3><p>​    首先我们来了解一下java.util.Map这个接口，这个接口十分强大，在源码中HashMap继承了AbstractMap这个父类，而HashMap和AbstractMap都实现了java.util.Map这个接口，另外两种数据结构LinkedHashMap和TreeMap，LinkedHashMap继承了HashMap，TreeMap继承了AbstractMap，这两种数据结构本文暂时先不介绍。</p><h3 id="1-3、详解"><a href="#1-3、详解" class="headerlink" title="1.3、详解"></a>1.3、详解</h3><ul><li><p>哈希算法：</p><ul><li><code>hashcode()</code>：哈希函数会对键<code>key</code>进行<code>hashcode()</code>得到它的哈希值。</li><li>高位运算：将哈希值与数组长度进行按位与(&amp;)运算，得到存储位置。JDK8之后优化了高位运算，通过hashCode()的高16位异或低16位实现按位与(&amp;)。</li><li>取模运算：将哈希值与数组长度进行取模运算，得到存储位置</li></ul></li><li><p><code>get()</code>方法实现：</p><ul><li>首先获取输入的键<code>key</code>，调用其<code>hashcode()</code>方法计算它的哈希值，然后通过哈希算法的后两步运算(<strong>高位运算与取模运算</strong>)计算出这个键对应的值的哈希表的存储地址。</li><li>如果这个存储地址为null，则返回null；如果这个地址存储的为单链表，那么就遍历这个单链表，将<code>key</code>与单链表每个元素的键进行<code>equals()</code>，查找到则返回元素，否则返回null；如果这个地址存储的为红黑树，则调用红黑树的查找方法实现。</li></ul></li><li><p><code>put()</code>方法实现：</p><ul><li>将输入的键<code>key</code>和值<code>value</code>封装成<code>Node&lt;key,value&gt;</code>结点。</li><li>调用键的<code>hashcode()</code>方法计算出它的哈希值，然后通过哈希算法的后两步运算(<strong>高位运算与取模运算</strong>)计算出这个键对应的值的哈希表的存储地址。</li><li>如果这个存储地址为null，则直接将这个结点存储在这个地址；如果这个存储地址存储的为一个单链表，则将<code>key</code>与单链表每个元素的键进行<code>equals()</code>，若全部都返回false，则**将该结点存储在单链表尾部(注：JDK8以前是存储在链表头部)**，若存储true，则覆盖原来的元素。如果是红黑树则调用红黑树的添加结点的方法。</li><li>单链表存储完结点之后，会判断当前单链表长度是否大于等于8，当大于等于8时，则单链表会转化成红黑树。</li></ul></li><li><p>扩容机制：</p><ul><li>哈希表初始化时的数组大小为16，负载因子为0.75，当哈希表中元素个数大于16*0.75个时，会触发哈希表的自动扩容机制，自动扩容之后数组大小为原来的两倍。</li><li>扩容过程会创建长度为原来两倍的数组，调用transfer()方法将原有Entry数组的元素拷贝到新的Entry数组里。<strong>JDK8之后优化了扩容过程，8之后扩容不需要重新计算哈希值(rehash的代价真的很大)，并且链表元素不会倒置。</strong></li></ul></li><li><p>单链表与红黑树的相互转化：</p><ul><li>单链表转化红黑树：当哈希表同一个hashcode值下，数据个数大于等于8个时，即单链表长度大于等于8时，会将单链表转化成红黑树。为什么阈值是8呢？因为链表中的节点遵循泊松分布，而且根据统计，链表中节点数是8的概率已经接近千万分之一，此时单链表的性能已经很差了，因此，转化为红黑树。</li><li>红黑树退化成单链表：当红黑树结点小于等于6个时，红黑树退化成单链表。阈值为6而不为8的原因是避免红黑树与单链表频繁的转化。</li></ul></li></ul><h3 id="1-4、线程安全性"><a href="#1-4、线程安全性" class="headerlink" title="1.4、线程安全性"></a>1.4、线程安全性</h3><ul><li>在多线程使用场景中，应该尽量避免使用线程不安全的HashMap，而使用线程安全的ConcurrentHashMap。</li><li>put数据不一致：A线程得到某个表头结点时，B线程开始并写入数据，而切换回A线程时A使用的是原来取出的表头，这就使B线程写入的数据消失了。</li><li>Rehash出现死循环：<ul><li>假设HashMap初始化大小为2，插入个2节点，不巧的是，这2个节点都hash到同一个位置，为a-&gt;b。插入第二个节点的时候会进行扩容。</li><li>线程A和B都需要进行扩容，然后当线程A执行到<code>Entry&lt;K,V&gt; next = e.next</code>时，next=a，e=b，然后线程A被挂起，执行线程B</li><li>线程B执行完扩容之后，刚好这两个节点又hash到同一个地址，此时存储的就是b-&gt;a，因此是头插法。</li><li>线程A被唤醒，首先将b插入扩容后的数组，然后再一次执行<code>Entry&lt;K,V&gt; next = e.next</code>，此时的e是之前的next，为a。然后把a使用头插法插入链表中。</li><li>而此时e的next为b，因为线程B已经扩容完了。</li><li>而再插入b，则会使原来a的next变成b，就是数组的头结点，此时就会出现死循环。</li></ul></li><li><strong>JDK8之后将头插法变成尾插法，解决了死循环这个问题。</strong></li></ul><h2 id="2、HashMap与HashTable区别"><a href="#2、HashMap与HashTable区别" class="headerlink" title="2、HashMap与HashTable区别"></a>2、HashMap与HashTable区别</h2><ul><li>父类不同：HashMap继承于AbstractMap，而HashTable继承于Dictionary，但是他们两个都实现了Map接口。</li><li>线程安全性：HashMap中的方法默认是非同步的，因此其线程是不安全的；而HashTable的方法会使用<code>synchronized</code>关键字修饰的，因此是线程安全的。</li><li>是否允许null值：Hashtable中无论是<code>key</code>还是<code>value</code>都不可以是null值。而在HashMap中，null值可以作为键和值，但是为null的键只能有一个，因此使用<code>get()</code>方法返回值为null时，可以表示HashMap中没有这个键值对，也可以表示该键对应的值为null，因此我们一般使用<code>containsKey()</code>方法判断HashMap中是否存在某个键。</li><li>ConcurrentHashMap也是线程安全性的，因此可以代替HashTable。但是HashTable提供更强的线程安全性，因为ConcurrentHashMap只会对map的一部分进行上锁。</li></ul><h2 id="3、HashSet详解"><a href="#3、HashSet详解" class="headerlink" title="3、HashSet详解"></a>3、HashSet详解</h2><h3 id="1-1、简介-1"><a href="#1-1、简介-1" class="headerlink" title="1.1、简介"></a>1.1、简介</h3><ul><li>HashSet是基于HashMap实现的，默认构造函数是构建一个初始容量为16，负载因子为0.75 的HashMap</li><li>如果我们需要把某个类作为HashSet的键，则必须重写该类的<code>equals()</code>和<code>hashcode()</code>方法</li><li>HashSet的其他操作都是基于HashMap的。</li></ul><h3 id="1-2、关系-1"><a href="#1-2、关系-1" class="headerlink" title="1.2、关系"></a>1.2、关系</h3><p>​    HashSet类继承了AbstractSet这个父类，实现了Set这个接口。</p><h3 id="1-3、详解-1"><a href="#1-3、详解-1" class="headerlink" title="1.3、详解"></a>1.3、详解</h3><ul><li>为什么要重写<code>equals()</code>和<code>hashcode()</code>方法：简单来说就是<code>equals()</code>方法默认是比较两个对象的内存地址，想要比较值则必须重写<code>equals()</code>，而重写<code>equals()</code>方法后，则必须重写<code>hashcode()</code>，因为<code>hashcode()</code>和<code>equals()</code>方法返回的结果必须一致，详细参见<a href="https://blog.csdn.net/Ferronzhu/article/details/116461427">https://blog.csdn.net/Ferronzhu/article/details/116461427</a></li><li>去重原理：去重原理在上面的博客中也有写到。具体来说，HashMap的实现原理就是调用键的<code>hashcode()</code>方法计算出其哈希值，然后再经过高位运算和取模运算计算出其在数组中的存储索引。HashSet添加一个键值对时，计算出键的存储索引后，若这个存储索引为null，则存储；若不为null，则进一步调用这两个键的<code>equals()</code>方法再次比较，返回true则判断这两个元素相同，不允许存储。这也是为什么HashSet需要保证<code>hashcode()</code>与<code>equals()</code>方法返回结果相等的原因。</li><li>HashSet不是线程安全的。</li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">Java面试之数据结构与算法</category>
+      
+      
+      <category domain="http://zhuferron.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</category>
+      
+      
+      <comments>http://zhuferron.github.io/2021/05/09/%E8%AF%A6%E8%A7%A3HashMap%E3%80%81HashTable%E3%80%81HashSet/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>详解Java中的String、StringBuffer和StringBuilder</title>
@@ -25,10 +94,10 @@
       <content:encoded><![CDATA[<h2 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h2><ul><li>java.lang.String：这个类产生的对象是不可变的，每次都会产生一个新的对象，这就会导致内存空间的浪费。String类是被<code>final</code>修饰符修饰的，这也就表示它不能被继承。String实现了三个接口:Serializable、Comparable<String>、CarSequence，其中Comparable<String>表示了其可以使用<code>compareTo()</code>方法进行比较。</li><li>java.lang.StringBuffer()：这个类产生的对象是可变的，且线程安全的。该类继承了<code>AbstractStringBuilder</code>父类，实现了Serializable, Comparable<StringBuffer>, CharSequence接口，但是其<code>compareTo()</code>方法无法进行字符串的比较。</li><li>java.lang.StringBuilder()：这个类产生的对象是可变的，但是线程是不安全的。该类也继承了<code>AbstractStringBuilder</code>父类，实现了Serializable, Comparable<StringBuilder>, CharSequence接口，但也是其<code>compareTo()</code>方法无法进行字符串的比较。</li></ul><h2 id="2、性能区别"><a href="#2、性能区别" class="headerlink" title="2、性能区别"></a>2、性能区别</h2><ul><li>String类每次都会创建一个新的对象，相当于每次都需要新建一个对象同时回收掉旧的对象，因此，操作String的效率是十分低下的。而StringBuilder和StringBuffer均为字符串变量，其创建之后是可以更改的，因此StringBuilder和StringBuffer执行速度会比String速度快。</li><li>我们再来比较StringBuilder和StringBuffer的执行速度。StringBuffer是线程安全的，其所有公共方法会被<code>synchronized</code>关键字所修饰，因此每次调用StringBuffer的方法都会加锁同步，而StringBuilder则无需加锁，因此StringBuilder的性能优于StringBuffer</li><li>StringBuffer缓冲区优化：StringBuffer每次调用<code>toString</code>方法时都会直接调用缓冲区<code>toStringCache</code>的值来构造字符串，而StringBuilder则是通过复制字符数组的方法来构造字符串，因此在这一点上StringBuffer是优于StringBuilder的。不过，StringBuffer的<code>toString</code>方法仍然是线程安全的。</li><li>性能：StringBuilder&gt;StringBuffer&gt;String</li></ul><h2 id="3、线程安全"><a href="#3、线程安全" class="headerlink" title="3、线程安全"></a>3、线程安全</h2><ul><li>而在线程是否安全上，StringBuffer是线程安全的，StringBuilder是非线程安全的。原因就是StringBuffer的所有公共方法都是用<code>synchronized</code>关键字修饰的</li><li>StringBulider适用于单线程情况下，StringBuffer适用于多线程情况下。</li></ul>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">Java面试之数据结构与算法</category>
       
       
-      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
+      <category domain="http://zhuferron.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</category>
       
       
       <comments>http://zhuferron.github.io/2021/05/08/%E8%AF%A6%E8%A7%A3Java%E4%B8%AD%E7%9A%84String%E3%80%81StringBuffer%E5%92%8CStringBuilder/#disqus_thread</comments>
@@ -48,7 +117,7 @@
       <content:encoded><![CDATA[<h2 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h2><p>程序：程序只是一串代码，是一串指令的有序集合，它只是一个静态的实体，本身并没有任何运行的含义。</p><p>进程：进程是一个程序(可以理解成一串代码)的一次运行，它相当于是一串代码执行的过程。包含了代码的加载、执行一直到执行完成。在Java中这个过程便是相当于一个源代码(.java)经过编译器javac编译成字节码(.class)文件之后，再由JVM中的类加载器加载字节码文件，创建的类、实例和成员变量存储在堆内存，而方法与局部变量等就存储在栈内存，一直该字节码解释完成为止。<strong>进程是系统进行资源分配和调度的一个独立单位。</strong></p><p>线程：线程的话则相当于是进程的一个实体，是CPU调度和分派的基础单位，它是比进程更小的一个能够独立运行的基本单位。一个进程有一个或多个线程，线程属于进程。</p><h2 id="2、程序与进程的区别"><a href="#2、程序与进程的区别" class="headerlink" title="2、程序与进程的区别"></a>2、程序与进程的区别</h2><table><thead><tr><th></th><th align="center">状态</th><th align="center">是否具有资源</th><th align="center">是否有唯一标识符</th><th align="center">是否具有并发性</th></tr></thead><tbody><tr><td>进程</td><td align="center">动态</td><td align="center">有</td><td align="center">有</td><td align="center">有</td></tr><tr><td>程序</td><td align="center">静态</td><td align="center">无</td><td align="center">有</td><td align="center">无</td></tr></tbody></table><h2 id="3、进程的基本状态"><a href="#3、进程的基本状态" class="headerlink" title="3、进程的基本状态"></a>3、进程的基本状态</h2><ul><li>就绪状态：当一个进程获得除CPU资源以外的所有资源，只要一旦获得CPU资源就可运行时，此时就为就绪状态。</li><li>执行状态：进程已获得CPU资源，正在执行。</li><li>阻塞状态：正在执行的进程因为发生某些事件而暂时无法继续执行，此时相当于整个进程暂停了。</li></ul><p><img src="http://fl.ljuuu.com/img/191353345101170.jpg"></p><h2 id="4、线程生命周期"><a href="#4、线程生命周期" class="headerlink" title="4、线程生命周期"></a>4、线程生命周期</h2><ol><li><p>创建：Java中线程的创建有两种方式：继承<code>Thread</code>父类或实现<code>Runable</code>接口</p></li><li><p>执行：Java中线程创建就有了该线程的内存空间，但是JVM并没有让这个线程开始执行，而是必须调用该线程的<code>start()</code>方法后，该线程才会开始执行。</p></li><li><p>中断：</p><ul><li>JVM将CPU的使用资源分配给了其他线程</li><li>该线程执行时调用了<code>sleep()</code>或<code>wait()</code>方法</li><li>该线程在使用CPU资源过程中，发生了某些事件导致了阻塞</li></ul></li><li><p>死亡：</p><ul><li>线程执行完毕</li><li>线程在执行完毕之前被提前终止。</li></ul></li></ol><h2 id="5、线程状态"><a href="#5、线程状态" class="headerlink" title="5、线程状态"></a>5、线程状态</h2><p>线程的状态与程序的生命周期息息相关，以下是线程的六种状态</p><ul><li>初始化：该线程已经被初始化，其在JVM中已经占用内存空间，但是不属于JVM管理的线程中，也就是该线程没有执行其<code>start()</code>方法</li><li>运行：这种状态就是线程被初始化之后并且调用了<code>start()</code>方法，该种状态有两种情况：准备就绪和运行中，区别就是是否获得了CPU资源。</li><li>阻塞：该线程调用<code>sleep()</code>、<code>wait()</code>方法、等待I/O或无法持有锁进入同步代码时，线程进入阻塞状态。</li><li>等待：该线程进入等待执行的状态，需要要某些特定事件显式地唤醒，否则会无限期地等待</li><li>超时等待：该线程进入等待执行的状态，其也可以被某些事件显式地唤醒，但是与等待不同的是，这种状态等待一个特定的时间候会被唤醒。</li><li>终止：该线程已经执行完毕。</li></ul>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
       
       
       <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
@@ -71,7 +140,7 @@
       <content:encoded><![CDATA[<h2 id="1、成员变量"><a href="#1、成员变量" class="headerlink" title="1、成员变量"></a>1、成员变量</h2><h3 id="1-1、定义"><a href="#1-1、定义" class="headerlink" title="1.1、定义"></a>1.1、定义</h3><p>当JVM的类加载器加载类时，类定义的成员变量会被创建，成员变量包括实例变量(不以<code>static</code>修饰)，类变量(以<code>static</code>修饰)以及常量。成员变量存在于JVM的堆内存中，其存在周期横跨类或实例的创建和销毁。</p><h3 id="1-2、运行机制"><a href="#1-2、运行机制" class="headerlink" title="1.2、运行机制"></a>1.2、运行机制</h3><p>类变量的初始化伴随着类的初始化一起进行，当一个类第一次被类加载器所加载之后，程序会在虚拟机堆内存中为该类分配一块内存空间，该类的类变量会存储在这块内存空间中，并被赋予默认值，使其在内存中存在。同样的，实例变量也同实例一起被创建，存储在堆内存空间，与实例共存亡。</p><h2 id="2、局部变量"><a href="#2、局部变量" class="headerlink" title="2、局部变量"></a>2、局部变量</h2><h3 id="2-1、定义"><a href="#2-1、定义" class="headerlink" title="2.1、定义"></a>2.1、定义</h3><p>局部变量根据定义的形式不同，分为形参、方法局部变量、代码块局部变量三种。形参是定义方法的签名时定义的局部变量，方法局部变量是方法内定义的变量，两者的作用域都是方法内，代码块局部变量则是在代码块结束的范围内生效，例如循环for语句。</p><h3 id="2-2、运行机制"><a href="#2-2、运行机制" class="headerlink" title="2.2、运行机制"></a>2.2、运行机制</h3><p>局部变量一般都在方法或代码块中被显示定义，局部变量必须被显示定义，系统并不会默认给局部变量进行初始化，而是当具体代码给局部变量显示赋值时，局部变量才在内存中存在。局部变量被存储在JVM栈内存中，当方法调用结束了，局部变量的内存存储就没了。</p>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
       
       
       <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
@@ -94,7 +163,7 @@
       <content:encoded><![CDATA[<h2 id="1、JVM"><a href="#1、JVM" class="headerlink" title="1、JVM"></a>1、JVM</h2><p>JVM 全称是Java Virtual Machine ，翻译过来就是Java 虚拟机，下图是JVM的组成部分。</p><p><img src="http://fl.ljuuu.com/img/690102-20160726145530263-378108880.png"></p><ul><li>Class Loader(类加载器)：<strong>类加载器本身也是一个类</strong>。当Java源代码(.java)经过javac的编译之后变成了字节码(.class)，字节码会进入JVM的类加载器。但是，并不是所有的字节码文件进入类加载器之后都会被加载，而是必须符合class文件的格式要求才会被加载。但是加载之后能不能运行就不是类加载器的负责部分了。</li><li>Runtime Data Area(运行数据区)：<ul><li>PC Register(程序计数器)：这部分是一块较小的内存空间，它可以被看成当前线程所执行的字节码的行号指示器。简单来说，就是为了保证程序的正确运行。当存在多线程时，CPU将线程A挂起并且去执行线程B，然后又回来执行线程A，此时CPU怎么知道之前该线程执行到哪里呢？因此，我们需要给每个线程都分配一个程序计数器，来记录该线程执行到的字节码行数，因此，<strong>每个程序计数器都是线程私有的。</strong></li><li>Stack(Java虚拟机栈)：<strong>Java虚拟机栈是线程私有的，生命周期与线程相同。</strong>它的存在是为了存储字节码文件解释时Java方法产生的内存模型。每个方法被执行时都会产生一个<strong>栈帧</strong>，存储局部变量表、操作栈、动态链接、方法出口。每个方法被调用到执行完成的过程，就相当于该栈帧在Java虚拟机栈从入栈到出栈的一次过程。</li><li>Heap(Java虚拟机堆)：Java虚拟机堆是虚拟机内存中最大的一部分，它在JVM启动时创建，被<strong>所有线程所共享</strong>。它负责存放对象实例，而<strong>Java的GC机制主要管理的也就是Java虚拟机堆</strong>。Java虚拟机堆在物理上可以不连续，逻辑上连续即可。</li><li>Method Area(方法区)：<strong>方法区域Java虚拟机堆一样，是线程共享的，并且也是可以在物理上不连续，逻辑上连续即可。</strong>这个区域存储一些已经被JVM加载的类信息、常量、静态变量等。方法区包括Runtime Constant Pool(运行时常量池)，它是用于保存 Class 文件中的符号引用、翻译出来的直接引用。</li><li>Native Method Stack(本地方法栈)：<strong>本地方法栈也是线程私有的。</strong>与Java虚拟机栈类似，只不过Java虚拟机栈中的方法是字节码文件解释时产生的Java方法，而本地方法栈中的方法是本地方法。</li></ul></li><li>Execution Engine(执行引擎)：我们知道Java的跨平台性是因为JVM的存在，JVM中执行引擎的作用就相当于解释器，将字节码文件解释成机器码。</li><li>Native Interface(本地库接口)：当执行引擎在解释时，需要加载一些基本类库，本地库接口的作用就是提供基本类库的接口给其引用。</li></ul><h2 id="2、JVM加载class文件的原理机制"><a href="#2、JVM加载class文件的原理机制" class="headerlink" title="2、JVM加载class文件的原理机制"></a>2、JVM加载class文件的原理机制</h2><p>了解了JVM的组合和体系，我们就很容易理解JVM加载class文件的原理机制</p><p>类加载器加载过程：</p><ul><li>装载和导入字节码文件</li><li>链接：<ul><li>检查：检查字节码文件的格式</li><li>准备：为类的静态变量分配内存</li><li>解析：将符号引用转化成直接引用</li></ul></li><li>初始化：初始化静态变量，静态代码块</li></ul>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
       
       
       <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
@@ -117,7 +186,7 @@
       <content:encoded><![CDATA[<p>JDK(Java Development Kit)：英文翻译过来就是Java开发工具，JDK包括Java基础类库，Java运行环境(JRE)，和Java开发工具。当你需要使用Java进行开发时，JDK是必备的。</p><p>JRE(Java Runtime Environment)：英文翻译过来就是Java运行环境，它包括Java虚拟机(JVM)，和基础类库</p><p>JVM(Java Virtual Machine)：英文翻译过来就是Java虚拟机，它是虚拟出来的一个计算机，JVM是Java能够跨平台的核心，所有的Java源码(.java)会被编译成字节码(.class)，然后字节码会被JVM中的解释器所解释执行。</p><p>总结：JVM是用来解释Java源码编译产生的字节码的，而有时候JVM解释的时候需要调用一些类库，类库+JVM=JRE。而单单有JRE只能运行Java程序，而不能进行开发，因此JRE+开发工具=JDK，有了JDK才能开发Java程序。</p>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
       
       
       <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
@@ -140,7 +209,7 @@
       <content:encoded><![CDATA[<h2 id="1、面向对象的思想"><a href="#1、面向对象的思想" class="headerlink" title="1、面向对象的思想"></a>1、面向对象的思想</h2><ul><li>Java是从C++衍生出来的，两者编程虽然都是面向对象的思想，但实际上Java和C++的面向对象还是有一些细微的区别。</li><li>Java中的面向对象思想，是万物皆对象，所有代码(变量和方法)都在类中定义，这也使我们的编程更容易理解，更简单。</li><li>而C++不仅仅包含面向对象，也包含面向过程，比如全局变量和全局函数。</li></ul><h2 id="2、解释VS编译"><a href="#2、解释VS编译" class="headerlink" title="2、解释VS编译"></a>2、解释VS编译</h2><ul><li>Java是一种<strong>解释性语言</strong>，即Java源码会先经过一次编译变成字节码(.class)，然后字节码会被JVM中内置的解释器所解释执行，因此Java具有很好的跨平台性。</li><li>而C++是一种编译型语言，C++源码在编译的时候直接解释了，因此C++的源码执行速度快，但跨平台性不如Java。</li></ul><h2 id="3、特性的区别"><a href="#3、特性的区别" class="headerlink" title="3、特性的区别"></a>3、特性的区别</h2><ul><li>C++支持多重继承，而Java只支持单继承，但是Java引入了接口的概念，可以实现多个接口。</li><li>C++开发中，需要开发人员自己去管理内存，C++开发中，一般把释放资源的代码放在<strong>析构函数</strong>中；而Java开发中有<strong>GC(Garbage Collection)机制</strong>，因此开发人员不需要显式地管理内存的分配。Java实现释放无用内存对象的时候，会调用该对象的<code>finalzie()</code>方法，这时候该对象内存就被释放了。</li><li>C++中有<strong>指针</strong>的概念，它是一种数据结构，它允许我们在内存空间中进行值管理；而Java中没有指针这个概念，但是有类似指针的<strong>引用</strong>。</li><li>C++支持<strong>运算符重载</strong>和函数重载，运算符重载就是重新定义C++内置的运算符，而Java只支持函数重载。</li></ul>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
       
       
       <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
@@ -163,82 +232,13 @@
       <content:encoded><![CDATA[<h2 id="1、按位运算符"><a href="#1、按位运算符" class="headerlink" title="1、按位运算符"></a>1、按位运算符</h2><h3 id="1-1、按位与-amp"><a href="#1-1、按位与-amp" class="headerlink" title="1.1、按位与(&amp;)"></a>1.1、按位与(&amp;)</h3><p>运算规则：0&amp;0=0；0&amp;1=0；1&amp;0=0；1&amp;1=1；<strong>简单来说，就是两数都为1则为1，否则为0。</strong></p><p>再举个例子，8&amp;9=00001000&amp;00001001=00001000=8。</p><p>如果有负数，则负数按其补码计算，例如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-8的补码为11111000,-8&amp;9&#x3D;11111000&amp;00001001&#x3D;00001000&#x3D;8</span><br></pre></td></tr></table></figure><h3 id="1-2、按位或"><a href="#1-2、按位或" class="headerlink" title="1.2、按位或(|)"></a>1.2、按位或(|)</h3><p>运算规则：0|0=0；0|1=1；1|0=1；1|1=1；<strong>简单来说，就是两数都为0则为0，否则为1。</strong></p><p>再举个例子，8&amp;9=00001000|00001001=00001001=9。</p><p>如果有负数，则负数按其补码计算。</p><h3 id="1-3、按位异或"><a href="#1-3、按位异或" class="headerlink" title="1.3、按位异或(^)"></a>1.3、按位异或(^)</h3><p>运算规则：0|0=0；0|1=1；1|0=1；1|1=0；<strong>简单来说，就是两数相同则为0，不相同为1。</strong></p><p>再举个例子，8&amp;9=00001000|00001001=00000001=1。</p><p>如果有负数，则负数按其补码计算。</p><h3 id="1-4、取反"><a href="#1-4、取反" class="headerlink" title="1.4、取反(~)"></a>1.4、取反(~)</h3><p>运算规则：<del>0=1；</del>1=0；</p><p>8&amp;~1=00001000&amp;11111110=00001000=8</p><h2 id="2、移位运算符"><a href="#2、移位运算符" class="headerlink" title="2、移位运算符"></a>2、移位运算符</h2><h3 id="2-1、左移运算符-lt-lt"><a href="#2-1、左移运算符-lt-lt" class="headerlink" title="2.1、左移运算符(&lt;&lt;)"></a>2.1、左移运算符(&lt;&lt;)</h3><p>左移运算符的意思就是将一个数的二进制数左移n位，例如10&lt;&lt;2就代表将10的二进制数左移两位，右位补0,10的二进制为00001010，左移后就是00101000，结果为40，相当于10×2×2。<strong>即每左移一位，相当于原10进制数乘2。</strong></p><h3 id="2-2、右移运算符-gt-gt"><a href="#2-2、右移运算符-gt-gt" class="headerlink" title="2.2、右移运算符(&gt;&gt;)"></a>2.2、右移运算符(&gt;&gt;)</h3><p>右移运算符的意思就是将一个数的二进制数右移n位，例如60&gt;&gt;2就代表将60的二进制数右移两位，正数左位补0，负数左位补1，右边丢弃，60的二进制为00111100，左移后就是00001111，结果为15，相当于10÷2÷2。<strong>即每右移一位，相当于原10进制数除2。</strong></p><h3 id="2-3、无符号右移运算符-gt-gt-gt"><a href="#2-3、无符号右移运算符-gt-gt-gt" class="headerlink" title="2.3、无符号右移运算符(&gt;&gt;&gt;)"></a>2.3、无符号右移运算符(&gt;&gt;&gt;)</h3><p>无符号右移运算符的意思跟右移运算符差不多，唯一区别就是无符号右移运算法不区分正负数，无论如果都是左位补0，右位丢弃。</p>]]></content:encoded>
       
       
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
+      <category domain="http://zhuferron.github.io/categories/Java%E9%9D%A2%E8%AF%95%E4%B9%8BJava%E5%9F%BA%E7%A1%80/">Java面试之Java基础</category>
       
       
       <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
       
       
       <comments>http://zhuferron.github.io/2021/05/07/Java%E4%B8%AD%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>浅谈hashcode()与equals()的区别</title>
-      <link>http://zhuferron.github.io/2021/05/06/%E6%B5%85%E8%B0%88hashcode()%E4%B8%8Eequals()/</link>
-      <guid>http://zhuferron.github.io/2021/05/06/%E6%B5%85%E8%B0%88hashcode()%E4%B8%8Eequals()/</guid>
-      <pubDate>Thu, 06 May 2021 11:47:32 GMT</pubDate>
-      
-      <description>本文介绍了hashcode()与equals()的作用，区别和理解</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h2><ul><li><code>hashcode()</code>：该方法是用来获取一个对象的哈希码，也称散列码。在Java中为什么需要有哈希码呢？比较两个对象相等直接用<code>==</code>或者<code>equals</code>不就行了吗？我们知道Java中集合(Collection)有两类，一种是List，另一种是Set，前者是有序可重复的，后者是无序不可重复的。我们拿Set来说，当我们将一个元素加入到Set里面时，怎么判断这个元素是否已经存在在这个Set里面了呢？用<code>equals</code>？虽然说这是一种方法，但是如果这个Set里面有100w个元素，每加入一个元素就需要调用100w次<code>equals</code>方法，这显然是不现实的！<strong>哈希码存在的意义就是直接将元素根据哈希算法指定到一个特定的地址上，这样每次Set存储一个元素就直接计算哈希值并依据其哈希值将其存储到特定的内存地址</strong>，如果该地址已经有数据了，则添加失败，这也大大地提高了效率。</li><li><code>equals()</code>：该方法是用来判断两个对象内存地址是否相同的方法，如果该方法被重写了，则依据其具体重写的内容来判断其具体功能，一般重写之后变成判断两个对象的值是否相同。</li></ul><h2 id="2、区别"><a href="#2、区别" class="headerlink" title="2、区别"></a>2、区别</h2><ul><li>如果两个对象的<code>hashcode()</code>返回值一样，其<code>equals()</code>返回结果不一定一样。</li><li>如果两个对象的<code>hashcode()</code>返回值不一样，其<code>equals()</code>返回结果一定不一样。</li><li>如果两个对象的<code>equals()</code>返回值一样，其<code>hashcode()</code>返回结果一定一样。</li><li>如果两个对象的<code>equals()</code>返回值不一样，其<code>hashcode()</code>返回结果不一定不一样。</li></ul><h2 id="3、理解"><a href="#3、理解" class="headerlink" title="3、理解"></a>3、理解</h2><ul><li>当你需要重写<code>equals()</code>方法时，则最好重写<code>hashcode()</code>方法。因为如果你重写了<code>equals()</code>方法而不重写<code>hashcode()</code>方法，则你写的类<code>equals()</code>方法是你自己重写的，可以判断两个对象的值是否相等，而<code>hashcode()</code>则是<code>Object</code>父类的方法，比较的是两个对象的内存地址。当你new了两个值相同的对象时，其内存地址大概率不相等，因此其<code>hashcode()</code>显示的是两个值的哈希码不相等，此时按照惯例判断其<code>equals()</code>方法返回的结果一定不一样，但是重写过的方法比较对象的值，因此<code>equals()</code>方法返回的结果是一样的，因此出现了歧义。</li><li><code>hashcode()</code>与<code>equals()</code>的存在都是有意义的，一般程序对比两个对象是否相同不会直接调用<code>equals()</code>，而是先调用<code>hashcode()</code>，只有当两个对象的哈希码相同时，才会进一步调用<code>equals()</code>来对两个对象进行比较，这大大地提高了效率。</li></ul>]]></content:encoded>
-      
-      
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
-      
-      
-      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
-      
-      
-      <comments>http://zhuferron.github.io/2021/05/06/%E6%B5%85%E8%B0%88hashcode()%E4%B8%8Eequals()/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Java中==与equals的区别浅谈</title>
-      <link>http://zhuferron.github.io/2021/05/06/Java%E4%B8%AD==%E4%B8%8Eequals%E7%9A%84%E5%8C%BA%E5%88%AB/</link>
-      <guid>http://zhuferron.github.io/2021/05/06/Java%E4%B8%AD==%E4%B8%8Eequals%E7%9A%84%E5%8C%BA%E5%88%AB/</guid>
-      <pubDate>Thu, 06 May 2021 08:24:18 GMT</pubDate>
-      
-      <description>本文从基本数据类型和引用数据类型的视角出发，浅谈了==与equals的区别</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="1、数据类型"><a href="#1、数据类型" class="headerlink" title="1、数据类型"></a>1、数据类型</h2><p>谈论<code>==</code>与<code>equal</code>的区别之前，我们先来回顾一下Java中的基本数据类型和引用数据类型。</p><p>基本数据类型：Java中包括八种基本数据类型，分别为char，byte，short，int，long，float，double，boolean。</p><p>引用数据类型：引用类型包括三种，分别为类(class)，接口(interface)，数组(array)，其中我们经常听到的Object，String，Date，Integer这些都属于类这种引用类型。</p><h2 id="2、区别"><a href="#2、区别" class="headerlink" title="2、区别"></a>2、区别</h2><ul><li>如果是用于基本数据类型的比较，则只能用<code>==</code>，而不能用<code>equals</code>，因为比较的数据类型是基本数据类型，它们没有equals()方法的实现，因此他们的比较只能用<code>==</code>来实现，<code>==</code>比较的是他们的值是否相等。</li><li>如果是用于引用数据类型的比较，不同情况下也有不同的结果。我们这里针对于类这种引用数据类型来说，所有的类都继承一个公共的父类<code>Object</code>，而该父类里面定义的比较方法为<code>equals</code>。但是，<code>Object</code>类里面的<code>equals</code>方法默认比较的结果是内存地址，而不是值，因此该方法返回的结果与<code>==</code>的结果相同。<strong>因此，这里判断<code>==</code>与<code>equals</code>的区别就变成了判断<code>equals</code>的具体实现是否用<code>==</code>来实现。</strong><ul><li>拿<code>String</code>，<code>Integer</code>，<code>Date</code>这些类来说，这些类在继承了<code>Object</code>之后，重写了父类的<code>equals</code>方法，因此这些引用数据类型使用<code>==</code>比较时，比较的是对象的内存地址，而使用<code>equals</code>方法比较时，则比较的是对象的值。</li><li>对于<code>StringBuffer</code>或者一些自定义的类，这些类没有重写覆盖父类<code>Object</code>的<code>equals</code>方法，因此这些对象使用<code>==</code>与<code>equals</code>返回的结果是一样，因为<code>equals</code>的实现方式就是使用<code>==</code>来实现的。</li><li>还有一个关于<code>字符串缓冲池</code>的概念，程序会在运行的时候创建一个字符串缓冲池，来存放一些创建的字符串。如果你同时定义了两个相同的字符串，并且没有进行new操作，则在定义第二个字符串的时候，会将第二个字符串的内存地址指向第一个相同的字符串，而不会再创建一个新对象。此时<code>==</code>与<code>equals</code>操作返回结果相同；而当第二个字符串进行了new操作，创建第二个字符串时会新建一个字符串，此时<code>==</code>与<code>equals</code>返回的结果不相同。</li></ul></li></ul>]]></content:encoded>
-      
-      
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
-      
-      
-      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
-      
-      
-      <comments>http://zhuferron.github.io/2021/05/06/Java%E4%B8%AD==%E4%B8%8Eequals%E7%9A%84%E5%8C%BA%E5%88%AB/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>接口与抽象类的区别(包括JDK8新特征)</title>
-      <link>http://zhuferron.github.io/2021/05/06/%E6%8E%A5%E5%8F%A3%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB(%E5%8C%85%E6%8B%ACJDK8%E6%96%B0%E7%89%B9%E6%80%A7)/</link>
-      <guid>http://zhuferron.github.io/2021/05/06/%E6%8E%A5%E5%8F%A3%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB(%E5%8C%85%E6%8B%ACJDK8%E6%96%B0%E7%89%B9%E6%80%A7)/</guid>
-      <pubDate>Thu, 06 May 2021 07:11:03 GMT</pubDate>
-      
-      <description>本文深入地分析了接口和抽象类的区别，也包括了JDK8前后的对比。</description>
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h2><p>抽象类：Java的核心就是面向对象，在面向对象的程序设计中，万物皆对象，所有的对象都应该用类来描述，但是并不是所有的类都是用来描述对象的。因为很多时候大部分对象都不能直接被描述，当一个类难于有足够的信息来描述一个具体的对象时，我们通常把它定义为抽象类，用关键字<code>abstract</code>来修饰。因此，凡是用关键字<code>abstract</code>修饰的类都是抽象类，凡是用关键字<code>abstract</code>修饰的方法都是抽象方法，抽象类不一定要拥有抽象方法，抽象方法一定在抽象类里面。</p><p>接口：广义上来说，接口算是一个只包含抽象方法的抽象类，但是严格上并不能这样说，因为接口不是直接说是抽象类，抽象类是包含属性和方法，而接口则是包含了类要实现的方法。接口在Java中算是一种抽象类型，是许多抽象方法的集合。接口需要用关键字<code>interface</code>来修饰。</p><h2 id="2、区别"><a href="#2、区别" class="headerlink" title="2、区别"></a>2、区别</h2><ol><li>抽象类可以有构造方法和普通成员变量，接口没有构造方法和普通成员变量，只能有<code>static final</code>关键字修饰的静态常量</li><li>抽象类可以有非抽象的普通方法，而对于接口来说，JDK8之前，接口只能有一系列的抽象方法；<strong>而在JDK8之后，接口不仅仅可以包含抽象方法，还可以包含默认方法和静态方法。</strong></li><li>一个类可以实现多个接口，但只能继承一个抽象类</li><li>抽象类中方法可以被所有关键字修饰，但是抽象方法只可以被<code>public</code>，<code>protected</code>，<code>default</code>关键字来修饰，不能用<code>private</code>修饰。JDK8之前，抽象类的方法默认访问权限为<code>protected</code>，JDK8以后，抽象类的方法默认访问权限变为<code>default</code>。而对于接口来说，JDK8之前，所有的抽象方法访问权限必须是<code>public</code>，JDK8时，抽象方法访问权限可以为<code>public</code>和<code>default</code>，JDK9及之后，抽象方法访问权限也可以是<code>private</code>。</li></ol><h2 id="3、其他"><a href="#3、其他" class="headerlink" title="3、其他"></a>3、其他</h2><ul><li><p>接口和抽象类的区别，本质上就是类和一系列抽象方法的集合的区别，抽象类可以有构造方法，普通方法，也可以有普通成员变量，而接口只能有静态常量和抽象方法(默认方法和静态方法)。</p></li><li><p>实际开发中，接口更像是一种开发规范，由架构师设计好了接口之后，再由项目开发团队分别把这些接口逐一去实现；而抽象类更多的是在具体代码实现方面发挥作用。</p></li><li><p>JDK8之后接口之所以要添加默认方法的原因，是因为当接口的实现类要实现接口时，需要重写接口里面的全部方法，这使接口与实现类的耦合度过高。因此如果需要给接口添加一个新的方法时，所有的实现类都需要修改，而默认方法可以实现为接口添加新的方法，并且不改变原有对接口的实现。</p></li><li><p>抽象类中的抽象方法不能用<code>private</code>修饰，因为抽象类中的抽象方法就是为了被子类重写而存在的，所以不能用<code>private</code>修饰。</p></li></ul>]]></content:encoded>
-      
-      
-      <category domain="http://zhuferron.github.io/categories/Java%E5%90%8E%E7%AB%AF/">Java后端</category>
-      
-      
-      <category domain="http://zhuferron.github.io/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</category>
-      
-      
-      <comments>http://zhuferron.github.io/2021/05/06/%E6%8E%A5%E5%8F%A3%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB(%E5%8C%85%E6%8B%ACJDK8%E6%96%B0%E7%89%B9%E6%80%A7)/#disqus_thread</comments>
       
     </item>
     
